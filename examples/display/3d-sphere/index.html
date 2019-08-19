@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>obnizOS on M5Stack</title>
+  <script src="https://obniz.io/js/jquery-3.2.1.min.js"></script>
+  <script src="https://unpkg.com/obniz@2.2.0/obniz.js"></script>
+  <script src="../../../m5stack.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/89/three.js"></script>
+</head>
+
+</head>
+<body>
+
+<div id="obniz-debug"></div>
+
+
+<script>
+
+
+  console.log("start");
+  let m5 = new M5Stack('OBNIZ_ID_HERE');
+
+  m5.onconnect = async function () {
+    await m5.m5display.readyWait();
+
+    const width = m5.m5display.width;
+    const height = m5.m5display.height;
+
+    const ctx = m5.util.createCanvasContext(width, height);
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(width, height);
+
+    var radius = 60;
+    var segments = 10;
+    var rings = 5;
+
+
+
+    var geometry = new THREE.SphereGeometry(radius, segments, rings);
+    var material = new THREE.MeshBasicMaterial({
+      color: 0xF3A2B0,
+      wireframe: true
+    });
+
+    var cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    camera.position.z = 150;
+    var duration = 50;
+    var time = new Date();
+
+    var render = function() {
+
+
+      cube.rotation.x += 0.05;
+      cube.rotation.y += 0.05;
+
+      renderer.render(scene, camera);
+
+      var img2D = new Image();
+      img2D.addEventListener("load", function () {
+        ctx.clearRect(0, 0, width, height);
+        ctx.drawImage(img2D, 0, 0);
+        m5.m5display.draw(ctx);
+      });
+      img2D.src = renderer.domElement.toDataURL("img/png");
+
+      requestRender();
+    };
+    var requestRender = function(){
+      let now = new Date();
+      if(now - time >=  duration ) {
+        time = now;
+        requestAnimationFrame(render);
+      }else{
+        setTimeout(requestRender, now - time - duration);
+      }
+    };
+    requestRender();
+  }
+
+
+</script>
+</body>
+</html>

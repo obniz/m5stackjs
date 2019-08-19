@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>obnizOS on M5Stack</title>
+  <script src="https://obniz.io/js/jquery-3.2.1.min.js"></script>
+  <script src="https://unpkg.com/obniz@2.2.0/obniz.js"></script>
+  <script src="../../m5stack.js"></script>
+</head>
+<body>
+
+<div id="obniz-debug"></div>
+
+buttonA:<span id="buttonA"></span><br/>
+buttonB:<span id="buttonB"></span><br/>
+buttonC:<span id="buttonC"></span><br/>
+
+
+<script>
+
+
+  console.log("start");
+  let m5 = new M5Stack('OBNIZ_ID_HERE');
+  m5.debugprint = true;
+  m5.debugprintBinary = true;
+
+  console.log("connecting");
+  m5.onconnect = async function () {
+    console.log("connected");
+
+    m5.buttonA.onchange = (state)=>{
+      $("#buttonA").text(state ? "pushed" : "released");
+    }
+
+    m5.buttonB.onchange = (state)=>{
+      $("#buttonB").text(state ? "pushed" : "released");
+    }
+
+    m5.buttonC.onchange = (state)=>{
+      $("#buttonC").text(state ? "pushed" : "released");
+    }
+
+  };
+
+
+</script>
+</body>
+</html>

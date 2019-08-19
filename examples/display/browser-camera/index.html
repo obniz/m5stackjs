@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>obnizOS on M5Stack with browser camera</title>
+  <script src="https://obniz.io/js/jquery-3.2.1.min.js"></script>
+  <script src="https://unpkg.com/obniz@2.2.0/obniz.js"></script>
+  <script src="../../../m5stack.js"></script>
+  <script src="https://unpkg.com/obniz-parts-kits@0.12.1/ai/opencv3.4/opencv.js"></script>
+</head>
+<body>
+
+<div id="obniz-debug"></div>
+
+<canvas width="320" height="240" id="sample1" style="background-color:yellow;">
+  Need canvas tag support.
+</canvas>
+
+<video id="videoInput" width=320 height=240></video>
+
+<script>
+
+  class Prosessing {
+
+    constructor(obj) {
+      this.video = document.getElementById(obj.video_dom);
+    }
+
+    startCam() {
+      const video = this.video;
+      if (!navigator.mediaDevices) {
+        navigator.mediaDevices = ((navigator.mozGetUserMedia || navigator.webkitGetUserMedia) ? {
+          getUserMedia: function (c) {
+            return new Promise(function (y, n) {
+              (navigator.mozGetUserMedia ||
+                  navigator.webkitGetUserMedia).call(navigator, c, y, n);
+            });
+          }
+        } : null);
+      }
+      return new Promise(async (resolve, reject) => {
+        const stream = await navigator.mediaDevices.getUserMedia({video: {facingMode: "user"}, audio: false});
+        video.srcObject = stream;
+        video.onloadedmetadata = (e) => {
+          video.play();
+          this.cap = new cv.VideoCapture(this.video);
+          resolve();
+        };
+      })
+    }
+
+    repeat(obj) {
+      const video = this.video;
+      const FPS = 20;
+      let src = new cv.Mat(video.height, video.width, cv.CV_8UC4);
+      let dst1 = new cv.Mat();
+      let dst2 = new cv.Mat();
+
+      let begin = Date.now();
+
+      this.cap.read(src);
+
+      cv.cvtColor(src, dst1, cv.COLOR_RGBA2GRAY);
+      cv.Canny(dst1, dst1, 30, 50, 3, false);
+
+      cv.blur(src, dst2, new cv.Size(1, 1));
+
+      cv.imshow(obj.output_dom1, dst1);
+
+      src.delete();
+      dst1.delete();
+      dst2.delete();
+
+
+      let delay = 1000 / FPS - (Date.now() - begin);
+      setTimeout(() => {
+        this.repeat(obj);
+      }, delay);
+    }
+
+  }
+
+
+  console.log("start");
+  let m5 = new M5Stack('OBNIZ_ID_HERE');
+
+
+  function sleep(ms) {
+    return new Promise(resolve => {
+      setTimeout(resolve, ms)
+    });
+  }
+
+
+  console.log("connecting");
+  m5.onconnect = async function () {
+    console.log("connected");
+
+    await m5.m5display.readyWait();
+
+    const process = new Prosessing({video_dom: "videoInput"});
+    await process.startCam();
+    process.repeat({output_dom1: "sample1"})
+
+    var canvas1 = document.getElementById('sample1');
+    var ctx1 = canvas1.getContext('2d');
+
+
+    while (1) {
+      m5.m5display.draw(ctx1);
+      await new Promise(resolve => {
+        setTimeout(resolve, 100)
+      });
+      await m5.pingWait();
+    }
+  };
+
+
+</script>
+</body>
+</html>

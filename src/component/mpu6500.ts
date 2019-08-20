@@ -18,6 +18,8 @@ export class MPU6500 {
         whoami : 0x75,
         whoami_results : 0x71,
 
+        int_pin_config : 0x37,
+
         accel_x_h : 0x3b,
         accel_x_l : 0x3c,
         accel_y_h : 0x3d,
@@ -33,6 +35,10 @@ export class MPU6500 {
         gyro_z_l: 0x48,
 
     };
+
+    private intPinConfigMask ={
+        "bypass_en" : 0b00000010,
+    }
 
 
     private settingParams = {
@@ -81,6 +87,18 @@ export class MPU6500 {
         // @ts-ignore
         this.i2c = this.obniz.getI2CWithConfig(this.params);
 
+
+
+    }
+
+    public async bypassMagnetometerWait(){
+        // Enable I2C bypass to access for MPU9250 magnetometer access.
+        this.i2c!.write(this.address, [this.commands.int_pin_config]);
+        let data =  await this.i2c!.readWait(this.address, 1)
+
+        data[0] |= this.intPinConfigMask.bypass_en;
+
+        this.i2c!.write(this.address, [this.commands.int_pin_config, data[0]]);
     }
 
 

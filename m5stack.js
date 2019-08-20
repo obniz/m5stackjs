@@ -489,6 +489,7 @@ class MPU6500 {
         this.commands = {
             whoami: 0x75,
             whoami_results: 0x71,
+            int_pin_config: 0x37,
             accel_x_h: 0x3b,
             accel_x_l: 0x3c,
             accel_y_h: 0x3d,
@@ -501,6 +502,9 @@ class MPU6500 {
             gyro_y_l: 0x46,
             gyro_z_h: 0x47,
             gyro_z_l: 0x48,
+        };
+        this.intPinConfigMask = {
+            "bypass_en": 0b00000010,
         };
         this.settingParams = {
             accel: {
@@ -541,6 +545,15 @@ class MPU6500 {
         this.params.mode = 'master';
         // @ts-ignore
         this.i2c = this.obniz.getI2CWithConfig(this.params);
+    }
+    bypassMagnetometerWait() {
+        return __awaiter(this, void 0, void 0, function* () {
+            // Enable I2C bypass to access for MPU9250 magnetometer access.
+            this.i2c.write(this.address, [this.commands.int_pin_config]);
+            let data = yield this.i2c.readWait(this.address, 1);
+            data[0] |= this.intPinConfigMask.bypass_en;
+            this.i2c.write(this.address, [this.commands.int_pin_config, data[0]]);
+        });
     }
     whoamiWait() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -616,6 +629,7 @@ class MPU9250 {
         this.ak8963 = this.obniz.wired("AK8963", { i2c: this.i2c });
         //@ts-ignore
         this.mpu6500 = this.obniz.wired("MPU6500", { i2c: this.i2c });
+        this.mpu6500.bypassMagnetometerWait();
         this.obniz.wait(500);
     }
 }

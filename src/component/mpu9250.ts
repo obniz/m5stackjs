@@ -38,6 +38,7 @@ export class MPU9250 {
 
         //@ts-ignore
         this.mpu6500 = this.obniz.wired("MPU6500", {i2c:this.i2c});
+        this.mpu6500!.bypassMagnetometerWait();
 
         this.obniz.wait(500);
     }

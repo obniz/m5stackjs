@@ -2,11 +2,11 @@
   "name": "m5stackjs",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
-    "build": "webpack ",
+    "build": "tsc && webpack ",
     "clean": "rm -rf dist",
     "lint": "tslint --fix 'src/**/*.ts'"
   },

@@ -210,18 +210,6 @@ class M5Display {
             this._drawCtx(ctx);
         }
     }
-    readyWait() {
-        return __awaiter(this, void 0, void 0, function* () {
-            while (1) {
-                if (this.ready) {
-                    return;
-                }
-                yield new Promise((resolve) => {
-                    setTimeout(resolve, 100);
-                });
-            }
-        });
-    }
     warnCanvasAvailability() {
         // @ts-ignore
         if (this.obniz.isNode) {
@@ -316,9 +304,10 @@ class M5Display {
         }
         return this._pos;
     }
-    print(text) {
+    print(text, color = "#FFFFFF") {
         const ctx = this._ctx();
         if (ctx) {
+            ctx.fillStyle = color;
             ctx.fillText(text, this._pos.x, this._pos.y + this.fontSize);
             this.draw(ctx);
             this._pos.y += this.fontSize;
@@ -370,18 +359,15 @@ class M5Display {
         }
     }
     setup() {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.getIO(this.m5defines.TFT_CS).output(false);
-            this.getIO(this.m5defines.TFT_RESET).output(false);
-            this.getIO(this.m5defines.TFT_RS).output(true);
-            // @ts-ignore
-            this.spi.start({
-                mode: "master",
-                clk: this.m5defines.TFT_SCK,
-                mosi: this.m5defines.TFT_MOSI,
-                frequency: 26 * 1000 * 1000,
-            });
-            yield this.onWait();
+        this.getIO(this.m5defines.TFT_CS).output(false);
+        this.getIO(this.m5defines.TFT_RESET).output(false);
+        this.getIO(this.m5defines.TFT_RS).output(true);
+        // @ts-ignore
+        this.spi.start({
+            mode: "master",
+            clk: this.m5defines.TFT_SCK,
+            mosi: this.m5defines.TFT_MOSI,
+            frequency: 26 * 1000 * 1000,
         });
     }
     onWait() {

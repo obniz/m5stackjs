@@ -96,7 +96,7 @@
   m5.onconnect = async function () {
     console.log("connected");
 
-    await m5.m5display.readyWait();
+    await m5.m5display.onWait();
 
     const process = new Prosessing({video_dom: "videoInput"});
     await process.startCam();

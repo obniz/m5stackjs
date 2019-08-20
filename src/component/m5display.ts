@@ -103,17 +103,6 @@ export class M5Display {
         }
     }
 
-    public async  readyWait(): Promise<void> {
-        while (1) {
-            if (this.ready) {
-                return;
-            }
-            await new Promise((resolve) => {
-                setTimeout(resolve, 100);
-            });
-        }
-    }
-
     public warnCanvasAvailability() {
         // @ts-ignore
         if (this.obniz.isNode) {
@@ -214,9 +203,10 @@ export class M5Display {
         return this._pos;
     }
 
-    public print(text: string) {
+    public print(text: string, color = "#FFFFFF") {
         const ctx = this._ctx();
         if (ctx) {
+            ctx.fillStyle = color;
             ctx.fillText(text, this._pos.x, this._pos.y + this.fontSize);
             this.draw(ctx);
             this._pos.y += this.fontSize;
@@ -266,7 +256,7 @@ export class M5Display {
         }
     }
 
-    private async setup() {
+    private setup() {
 
         this.getIO(this.m5defines.TFT_CS).output(false);
         this.getIO(this.m5defines.TFT_RESET).output(false);
@@ -280,7 +270,7 @@ export class M5Display {
             frequency: 26 * 1000 * 1000,
         });
 
-        await this.onWait();
+
     }
 
     public async onWait(){

@@ -22,7 +22,7 @@
   let m5 = new M5Stack('OBNIZ_ID_HERE');
 
   m5.onconnect = async function () {
-    await m5.m5display.readyWait();
+    await m5.m5display.onWait();
 
     const width = m5.m5display.width;
     const height = m5.m5display.height;

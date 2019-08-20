@@ -26,6 +26,10 @@ buttonC:<span id="buttonC"></span><br/>
   m5.onconnect = async function () {
     console.log("connected");
 
+    await m5.m5display.onWait();
+    m5.m5display.print("Push Buttons ↓");
+
+
     m5.buttonA.onchange = (state)=>{
       $("#buttonA").text(state ? "pushed" : "released");
     }

@@ -87,6 +87,39 @@ var M5Stack =
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/component/ak8963.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+class AK8963 {
+    constructor() {
+        this.keys = ['gnd', 'sda', 'scl', 'i2c'];
+        this.requiredKeys = [];
+    }
+    static info() {
+        return {
+            name: 'AK8963',
+        };
+    }
+    wired(obniz) {
+        this.obniz = obniz;
+        // @ts-ignore
+        obniz.setVccGnd(null, this.params.gnd, '3v');
+        this.params.clock = 100000;
+        this.params.pull = '3v';
+        this.params.mode = 'master';
+        // @ts-ignore
+        this.i2c = this.obniz.getI2CWithConfig(this.params);
+        this.obniz.wait(500);
+    }
+}
+exports.AK8963 = AK8963;
+
+
+/***/ }),
+
 /***/ "./src/component/m5display.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -348,11 +381,20 @@ class M5Display {
                 mosi: this.m5defines.TFT_MOSI,
                 frequency: 26 * 1000 * 1000,
             });
+            yield this.onWait();
+        });
+    }
+    onWait() {
+        return __awaiter(this, void 0, void 0, function* () {
             this.getIO(32).output(true);
             yield this.obniz.wait(1);
             yield this.lcd_init();
             this.ready = true;
         });
+    }
+    off() {
+        this.getIO(32).output(false);
+        this.ready = false;
     }
     write_command(c) {
         this.getIO(this.m5defines.TFT_RS).output(false);
@@ -439,6 +481,163 @@ exports.M5Display = M5Display;
 
 /***/ }),
 
+/***/ "./src/component/mpu6500.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+class MPU6500 {
+    constructor() {
+        this.keys = ['gnd', 'sda', 'scl', 'i2c'];
+        this.requiredKeys = [];
+        this.address = 0x68;
+        this.commands = {
+            whoami: 0x75,
+            whoami_results: 0x71,
+            accel_x_h: 0x3b,
+            accel_x_l: 0x3c,
+            accel_y_h: 0x3d,
+            accel_y_l: 0x3e,
+            accel_z_h: 0x3f,
+            accel_z_l: 0x40,
+            gyro_x_h: 0x43,
+            gyro_x_l: 0x44,
+            gyro_y_h: 0x45,
+            gyro_y_l: 0x46,
+            gyro_z_h: 0x47,
+            gyro_z_l: 0x48,
+        };
+        this.settingParams = {
+            accel: {
+                so: {
+                    "2g": 16384,
+                    "4g": 8192,
+                    "8g": 4096,
+                    "16g": 2048,
+                },
+                m_s2: 9.80665,
+                g: 1,
+            },
+            gyro: {
+                so: {
+                    "250dps": 131,
+                    "500dps": 62.5,
+                    "1000dps": 1000,
+                    "2000dps": 16.4,
+                },
+                deg: 1,
+                rad: 57.295779578552 //1 rad/s is 57.295779578552 deg/s
+            }
+        };
+        this.accel_so = "2g";
+        this.gyro_so = "250dps";
+    }
+    static info() {
+        return {
+            name: 'MPU6500',
+        };
+    }
+    wired(obniz) {
+        this.obniz = obniz;
+        // @ts-ignore
+        obniz.setVccGnd(null, this.params.gnd, '3v');
+        this.params.clock = 100000;
+        this.params.pull = '3v';
+        this.params.mode = 'master';
+        // @ts-ignore
+        this.i2c = this.obniz.getI2CWithConfig(this.params);
+    }
+    whoamiWait() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.i2c.write(this.address, [this.commands.whoami]);
+            return yield this.i2c.readWait(this.address, 1);
+        });
+    }
+    gyroWait() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.i2c.write(this.address, [this.commands.gyro_x_h]);
+            let data = yield this.i2c.readWait(this.address, 6);
+            const { gyro } = this.settingParams;
+            let scale = gyro.deg / gyro.so[this.gyro_so];
+            return {
+                x: this.char2short(data.slice(0, 2)) * scale,
+                y: this.char2short(data.slice(2, 4)) * scale,
+                z: this.char2short(data.slice(4, 6)) * scale,
+            };
+        });
+    }
+    accelerationWait() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.i2c.write(this.address, [this.commands.accel_x_h]);
+            let data = yield this.i2c.readWait(this.address, 6);
+            const { accel } = this.settingParams;
+            let scale = accel.m_s2 / accel.so[this.accel_so];
+            return {
+                x: this.char2short(data.slice(0, 2)) * scale,
+                y: this.char2short(data.slice(2, 4)) * scale,
+                z: this.char2short(data.slice(4, 6)) * scale,
+            };
+        });
+    }
+    char2short(values) {
+        const buffer = new ArrayBuffer(2);
+        const dv = new DataView(buffer);
+        dv.setUint8(0, values[0]);
+        dv.setUint8(1, values[1]);
+        return dv.getInt16(0, false);
+    }
+}
+exports.MPU6500 = MPU6500;
+
+
+/***/ }),
+
+/***/ "./src/component/mpu9250.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+class MPU9250 {
+    constructor() {
+        this.keys = ['gnd', 'sda', 'scl', 'i2c'];
+        this.requiredKeys = [];
+    }
+    static info() {
+        return {
+            name: 'MPU9250',
+        };
+    }
+    wired(obniz) {
+        this.obniz = obniz;
+        // @ts-ignore
+        obniz.setVccGnd(null, this.params.gnd, '3v');
+        this.params.clock = 100000;
+        this.params.pull = '3v';
+        this.params.mode = 'master';
+        // @ts-ignore
+        this.i2c = this.obniz.getI2CWithConfig(this.params);
+        //@ts-ignore
+        this.ak8963 = this.obniz.wired("AK8963", { i2c: this.i2c });
+        //@ts-ignore
+        this.mpu6500 = this.obniz.wired("MPU6500", { i2c: this.i2c });
+        this.obniz.wait(500);
+    }
+}
+exports.MPU9250 = MPU9250;
+
+
+/***/ }),
+
 /***/ "./src/index.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -461,9 +660,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const obniz_1 = __importDefault(__webpack_require__("./src/webpack-replace/obniz.js"));
 const m5display_1 = __webpack_require__("./src/component/m5display.ts");
+const ak8963_1 = __webpack_require__("./src/component/ak8963.ts");
+const mpu6500_1 = __webpack_require__("./src/component/mpu6500.ts");
+const mpu9250_1 = __webpack_require__("./src/component/mpu9250.ts");
+// @ts-ignore
+obniz_1.default.PartsRegistrate(ak8963_1.AK8963);
+// @ts-ignore
+obniz_1.default.PartsRegistrate(mpu6500_1.MPU6500);
+// @ts-ignore
+obniz_1.default.PartsRegistrate(mpu9250_1.MPU9250);
 class M5Stack extends obniz_1.default {
     constructor(id, options) {
         super(id, options);
+        this.hasIMU = false;
     }
     _prepareComponents() {
         // @ts-ignore
@@ -482,6 +691,25 @@ class M5Stack extends obniz_1.default {
             // @ts-ignore
             this._allComponentKeys.push(key);
         }
+    }
+    setupIMU() {
+        //@ts-ignore
+        this.mpu9250 = this.wired("MPU9250", { sda: 21, scl: 22 });
+        // @ts-ignore
+        this._allComponentKeys.push("mpu9250");
+        this.hasIMU = true;
+    }
+    gyroWait() {
+        if (!this.hasIMU) {
+            throw new Error("gyroWait is supported only M5stack gray. If this device is, please call setupIMU().");
+        }
+        return this.mpu9250.mpu6500.gyroWait();
+    }
+    accelerationWait() {
+        if (!this.hasIMU) {
+            throw new Error("accelerationWait is supported only M5stack gray. If this device is, please call setupIMU().");
+        }
+        return this.mpu9250.mpu6500.accelerationWait();
     }
 }
 exports.M5Stack = M5Stack;

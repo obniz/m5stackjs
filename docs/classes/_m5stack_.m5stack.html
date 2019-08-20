@@ -112,6 +112,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_m5stack_.m5stack.html#connectionstate" class="tsd-kind-icon">connection<wbr>State</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_m5stack_.m5stack.html#debugprint" class="tsd-kind-icon">debugprint</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_m5stack_.m5stack.html#display" class="tsd-kind-icon">display</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_m5stack_.m5stack.html#hasimu" class="tsd-kind-icon">hasIMU</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_m5stack_.m5stack.html#i2c0" class="tsd-kind-icon">i2c0</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_m5stack_.m5stack.html#io" class="tsd-kind-icon">io</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_m5stack_.m5stack.html#io0" class="tsd-kind-icon">io0</a></li>
@@ -129,6 +130,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_m5stack_.m5stack.html#logicanalyzer" class="tsd-kind-icon">logic<wbr>Analyzer</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_m5stack_.m5stack.html#m5display" class="tsd-kind-icon">m5display</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_m5stack_.m5stack.html#measure" class="tsd-kind-icon">measure</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_m5stack_.m5stack.html#mpu9250" class="tsd-kind-icon">mpu9250</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_m5stack_.m5stack.html#onclose" class="tsd-kind-icon">onclose</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_m5stack_.m5stack.html#onconnect" class="tsd-kind-icon">onconnect</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_m5stack_.m5stack.html#pwm0" class="tsd-kind-icon">pwm0</a></li>
@@ -150,6 +152,7 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_m5stack_.m5stack.html#_preparecomponents" class="tsd-kind-icon">_prepare<wbr>Components</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_m5stack_.m5stack.html#accelerationwait" class="tsd-kind-icon">acceleration<wbr>Wait</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_m5stack_.m5stack.html#close" class="tsd-kind-icon">close</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_m5stack_.m5stack.html#connect" class="tsd-kind-icon">connect</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_m5stack_.m5stack.html#connectwait" class="tsd-kind-icon">connect<wbr>Wait</a></li>
@@ -157,10 +160,12 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_m5stack_.m5stack.html#getfreepwm" class="tsd-kind-icon">get<wbr>Free<wbr>Pwm</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_m5stack_.m5stack.html#getfreespi" class="tsd-kind-icon">get<wbr>Free<wbr>Spi</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_m5stack_.m5stack.html#getfreeuart" class="tsd-kind-icon">get<wbr>Free<wbr>Uart</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_m5stack_.m5stack.html#gyrowait" class="tsd-kind-icon">gyro<wbr>Wait</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_m5stack_.m5stack.html#keepworkingatoffline" class="tsd-kind-icon">keep<wbr>Working<wbr>AtOffline</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_m5stack_.m5stack.html#repeat" class="tsd-kind-icon">repeat</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_m5stack_.m5stack.html#reset" class="tsd-kind-icon">reset</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_m5stack_.m5stack.html#resetondisconnect" class="tsd-kind-icon">reset<wbr>OnDisconnect</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_m5stack_.m5stack.html#setupimu" class="tsd-kind-icon">setupIMU</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_m5stack_.m5stack.html#wait" class="tsd-kind-icon">wait</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="_m5stack_.m5stack.html#wired" class="tsd-kind-icon">wired</a></li>
 							</ul>
@@ -180,7 +185,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in m5stack.ts:11</li>
+									<li>Defined in m5stack.ts:26</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -348,7 +353,7 @@
 					<div class="tsd-signature tsd-kind-icon">buttonA<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Button</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in m5stack.ts:9</li>
+							<li>Defined in m5stack.ts:21</li>
 						</ul>
 					</aside>
 				</section>
@@ -358,7 +363,7 @@
 					<div class="tsd-signature tsd-kind-icon">buttonB<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Button</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in m5stack.ts:10</li>
+							<li>Defined in m5stack.ts:22</li>
 						</ul>
 					</aside>
 				</section>
@@ -368,7 +373,7 @@
 					<div class="tsd-signature tsd-kind-icon">buttonC<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Button</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in m5stack.ts:11</li>
+							<li>Defined in m5stack.ts:23</li>
 						</ul>
 					</aside>
 				</section>
@@ -402,6 +407,16 @@
 						<p>Inherited from Obniz.display</p>
 						<ul>
 							<li>Defined in /Users/kido/Documents/extra/obniz/m5stackjs/node_modules/obniz/obniz.d.ts:391</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="hasimu" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> hasIMU</h3>
+					<div class="tsd-signature tsd-kind-icon">hasIMU<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in m5stack.ts:26</li>
 						</ul>
 					</aside>
 				</section>
@@ -576,7 +591,7 @@
 					<div class="tsd-signature tsd-kind-icon">m5display<span class="tsd-signature-symbol">:</span> <a href="_component_m5display_.m5display.html" class="tsd-signature-type">M5Display</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in m5stack.ts:8</li>
+							<li>Defined in m5stack.ts:20</li>
 						</ul>
 					</aside>
 				</section>
@@ -588,6 +603,16 @@
 						<p>Inherited from Obniz.measure</p>
 						<ul>
 							<li>Defined in /Users/kido/Documents/extra/obniz/m5stackjs/node_modules/obniz/obniz.d.ts:388</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="mpu9250" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagOptional">Optional</span> mpu9250</h3>
+					<div class="tsd-signature tsd-kind-icon">mpu9250<span class="tsd-signature-symbol">:</span> <a href="_component_mpu9250_.mpu9250.html" class="tsd-signature-type">MPU9250</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in m5stack.ts:25</li>
 						</ul>
 					</aside>
 				</section>
@@ -798,10 +823,27 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in m5stack.ts:18</li>
+									<li>Defined in m5stack.ts:33</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="accelerationwait" class="tsd-anchor"></a>
+					<h3>acceleration<wbr>Wait</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">acceleration<wbr>Wait<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in m5stack.ts:73</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -937,6 +979,23 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="gyrowait" class="tsd-anchor"></a>
+					<h3>gyro<wbr>Wait</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">gyro<wbr>Wait<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in m5stack.ts:66</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="keepworkingatoffline" class="tsd-anchor"></a>
 					<h3>keep<wbr>Working<wbr>AtOffline</h3>
@@ -1039,6 +1098,23 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setupimu" class="tsd-anchor"></a>
+					<h3>setupIMU</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">setupIMU<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in m5stack.ts:58</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="wait" class="tsd-anchor"></a>
 					<h3>wait</h3>
@@ -1105,7 +1181,16 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="../modules/_component_ak8963_.html">"component/ak8963"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_component_m5display_.html">"component/m5display"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_component_mpu6500_.html">"component/mpu6500"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_component_mpu9250_.html">"component/mpu9250"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_index_.html">"index"</a>
@@ -1182,6 +1267,9 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="_m5stack_.m5stack.html#display" class="tsd-kind-icon">display</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_m5stack_.m5stack.html#hasimu" class="tsd-kind-icon">hasIMU</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="_m5stack_.m5stack.html#i2c0" class="tsd-kind-icon">i2c0</a>
 							</li>
@@ -1233,6 +1321,9 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="_m5stack_.m5stack.html#measure" class="tsd-kind-icon">measure</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="_m5stack_.m5stack.html#mpu9250" class="tsd-kind-icon">mpu9250</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="_m5stack_.m5stack.html#onclose" class="tsd-kind-icon">onclose</a>
 							</li>
@@ -1281,6 +1372,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="_m5stack_.m5stack.html#_preparecomponents" class="tsd-kind-icon">_prepare<wbr>Components</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_m5stack_.m5stack.html#accelerationwait" class="tsd-kind-icon">acceleration<wbr>Wait</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="_m5stack_.m5stack.html#close" class="tsd-kind-icon">close</a>
 							</li>
@@ -1302,6 +1396,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="_m5stack_.m5stack.html#getfreeuart" class="tsd-kind-icon">get<wbr>Free<wbr>Uart</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_m5stack_.m5stack.html#gyrowait" class="tsd-kind-icon">gyro<wbr>Wait</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="_m5stack_.m5stack.html#keepworkingatoffline" class="tsd-kind-icon">keep<wbr>Working<wbr>AtOffline</a>
 							</li>
@@ -1313,6 +1410,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="_m5stack_.m5stack.html#resetondisconnect" class="tsd-kind-icon">reset<wbr>OnDisconnect</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_m5stack_.m5stack.html#setupimu" class="tsd-kind-icon">setupIMU</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="_m5stack_.m5stack.html#wait" class="tsd-kind-icon">wait</a>

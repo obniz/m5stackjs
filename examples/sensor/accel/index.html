@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>obnizOS on M5Stack</title>
+  <script src="https://obniz.io/js/jquery-3.2.1.min.js"></script>
+  <script src="https://unpkg.com/obniz@2.2.0/obniz.js"></script>
+  <script src="../../../m5stack.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+</head>
+<body>
+
+<div id="obniz-debug"></div>
+
+<fieldset>
+  <legend>Accel</legend>
+  X:<span id="accel_x"></span>[m/s^2]<br/>
+  Y:<span id="accel_y"></span>[m/s^2]<br/>
+  Z:<span id="accel_z"></span>[m/s^2]
+</fieldset>
+
+<canvas id="myChart" style="width:100%;height:400px"></canvas>
+
+<script>
+
+
+  console.log("start");
+
+  let colors = {
+    x:"rgba(255, 99, 132, 1)",
+    y: "rgba(54, 162, 235, 1)",
+    z: "rgba(255, 206, 86, 1)"
+  };
+  let myChart;
+
+
+  setupCharts();
+  let m5 = new M5Stack('01067965');
+
+  console.log("connecting");
+  m5.onconnect = async function () {
+    console.log("connected");
+
+    m5.setupIMU();
+    while(1) {
+      let data = await m5.accelerationWait();
+      $("#accel_x").text(Number.parseFloat(data.x).toFixed(2));
+      $("#accel_y").text(Number.parseFloat(data.y).toFixed(2));
+      $("#accel_z").text(Number.parseFloat(data.z).toFixed(2));
+
+      addChart([data.x,data.y,data.z]);
+      scrollToRight();
+      myChart.update();
+    }
+
+  };
+
+
+  function setupCharts(){
+    let ctx = document.getElementById("myChart").getContext('2d');
+
+
+    let dataSet = [];
+    for(let index of ["x","y","z"]){
+      dataSet.push({
+        label: 'accel_'+index,
+        data: [],
+        borderWidth: 1,
+        fill: false,
+        lineTension: 0,
+        borderColor: colors[index],
+        backgroundColor: colors[index],
+      });
+    }
+
+    myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        datasets: dataSet
+      },
+      options: {
+        animation:{
+          duration: 0,
+        },
+        scales: {
+          xAxes: [{
+            type: "time",
+            time: {},
+            scaleLabel: {
+              display: true,
+              labelString: 'Time'
+            }
+          }],
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'm/s^2'
+            },
+            ticks: {
+              min: -20,
+              max:20
+            }
+
+          }]
+        }
+      }
+    });
+  }
+  function addChart(vals) {
+    for(let index in vals){
+      if(vals[index]){
+        myChart.data.datasets[index].data.push({x: new Date(), y: vals[index]})
+      }
+    }
+
+  }
+  function scrollToRight(){
+    let now = new Date();
+    myChart.options.scales.xAxes[0].time.max = now;
+    myChart.options.scales.xAxes[0].time.min = new Date(now.getTime() - 15 * 1000);
+    for (let i = 0; i < myChart.data.datasets.length; i++) {
+      myChart.data.datasets[i].data = myChart.data.datasets[i].data.filter((elm) => {
+        return elm.x.getTime() > myChart.options.scales.xAxes[0].time.min;
+      })
+    }
+
+  }
+</script>
+</body>
+</html>

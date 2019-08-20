@@ -21,8 +21,6 @@ buttonC:<span id="buttonC"></span><br/>
 
   console.log("start");
   let m5 = new M5Stack('OBNIZ_ID_HERE');
-  m5.debugprint = true;
-  m5.debugprintBinary = true;
 
   console.log("connecting");
   m5.onconnect = async function () {

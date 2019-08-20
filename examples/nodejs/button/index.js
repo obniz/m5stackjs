@@ -1,6 +1,6 @@
-const M5Stack = require("../../../dist/index"); //replace to require("m5stackjs")
+const M5Stack = require("m5stackjs");
 
-let m5 = new M5Stack('01067965');
+let m5 = new M5Stack('OBNIZ_ID_HERE');
 
 console.log("connecting");
 

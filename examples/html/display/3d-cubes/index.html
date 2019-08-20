@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>obnizOS on M5Stack</title>
+  <script src="https://obniz.io/js/jquery-3.2.1.min.js"></script>
+  <script src="https://unpkg.com/obniz@2.2.0/obniz.js"></script>
+  <script src="../../../../m5stack.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/107/three.min.js"></script>
+</head>
+
+</head>
+<body>
+
+<div id="obniz-debug"></div>
+<canvas width="320" height="240" id="canvas"></canvas>
+<canvas width="320" height="240" id="2dcanvas"></canvas>
+
+
+<script>
+
+
+  console.log("start");
+  let m5 = new M5Stack('OBNIZ_ID_HERE');
+
+  var domElement;
+
+  const width = 320;
+  const height = 260;
+  var drawing = 0;
+
+  m5.onconnect = async function () {
+    await m5.m5display.onWait();
+
+    const width = m5.m5display.width;
+    const height = m5.m5display.height;
+    var canvas = document.getElementById('canvas');
+    startRendering(canvas);
+  }
+
+  function drawCtx() {
+    if (drawing > 0) {
+      return new Promise((resolve) => {resolve()});
+    }
+    drawing++;
+    var can_2d = document.getElementById("2dcanvas");
+    var ctx_2d = can_2d.getContext("2d");
+    return new Promise(async (resolve, reject) => {
+      var img2D = new Image();
+      img2D.addEventListener("load", async function () {
+        ctx_2d.clearRect(0, 0, width, height);
+        ctx_2d.drawImage(img2D, 0, 0);
+        m5.m5display.draw(ctx_2d);
+        await m5.pingWait();
+        drawing = 0;
+        resolve();
+      });
+      img2D.src = domElement.toDataURL("img/png");
+    })
+  }
+
+  function startRendering(canvas) {
+    var camera, scene, renderer, group;
+    var mouseX = 0, mouseY = 0;
+    var windowHalfX = window.innerWidth / 2;
+    var windowHalfY = window.innerHeight / 2;
+    init();
+    animate();
+    function init() {
+      camera = new THREE.PerspectiveCamera( 60, width / height, 1, 10000 );
+      camera.position.z = 500;
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color( 0xffffff );
+      scene.fog = new THREE.Fog( 0xffffff, 1, 10000 );
+      var geometry = new THREE.BoxBufferGeometry( 100, 100, 100 );
+      var material = new THREE.MeshNormalMaterial();
+      group = new THREE.Group();
+      for ( var i = 0; i < 1000; i ++ ) {
+        var mesh = new THREE.Mesh( geometry, material );
+        mesh.position.x = Math.random() * 2000 - 1000;
+        mesh.position.y = Math.random() * 2000 - 1000;
+        mesh.position.z = Math.random() * 2000 - 1000;
+        mesh.rotation.x = Math.random() * 2 * Math.PI;
+        mesh.rotation.y = Math.random() * 2 * Math.PI;
+        mesh.matrixAutoUpdate = false;
+        mesh.updateMatrix();
+        group.add( mesh );
+      }
+      scene.add( group );
+      //
+      renderer = new THREE.WebGLRenderer( { antialias: true, canvas: canvas } );
+      renderer.setPixelRatio( window.devicePixelRatio );
+      renderer.setSize( width, height );
+      document.body.appendChild( renderer.domElement );
+      domElement = renderer.domElement;
+      //
+      document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+      //
+      // window.addEventListener( 'resize', onWindowResize, false );
+    }
+    function onDocumentMouseMove( event ) {
+      mouseX = ( event.clientX - windowHalfX ) * 10;
+      mouseY = ( event.clientY - windowHalfY ) * 10;
+    }
+    //
+    function animate() {
+      requestAnimationFrame( animate );
+      render();
+    }
+    function render() {
+      var time = Date.now() * 0.001;
+      var rx = Math.sin( time * 0.7 ) * 0.5,
+        ry = Math.sin( time * 0.3 ) * 0.5,
+        rz = Math.sin( time * 0.2 ) * 0.5;
+      camera.position.x += ( mouseX - camera.position.x ) * 0.05;
+      camera.position.y += ( - mouseY - camera.position.y ) * 0.05;
+      camera.lookAt( scene.position );
+      group.rotation.x = rx;
+      group.rotation.y = ry;
+      group.rotation.z = rz;
+      renderer.render( scene, camera );
+      drawCtx().then(function(){})
+    }
+  }
+
+  
+</script>
+
+</body>
+</html>

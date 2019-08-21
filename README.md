@@ -24,6 +24,7 @@ It works on both browser and nodejs.
 <body>
 
 <div id="obniz-debug"></div>
+buttonA:<span id="buttonA"></span><br/>
 
 
 <script>

@@ -4,14 +4,14 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
     "build": "npm run tsc && npm run webpack",
     "webpack": "node $NODE_DEBUG_OPTION ./node_modules/webpack/bin/webpack.js && touch ./docs/.nojekyll",
     "clean": "rm -rf dist",
     "lint": "tslint --fix 'src/**/*.ts'"
   },
-  "author": "",
+  "author": "CambrianRobotics inc,",
+  "homepage": "https://github.com/obniz/m5stackjs",
   "license": "MIT",
   "dependencies": {
     "obniz": "^2.2.0"

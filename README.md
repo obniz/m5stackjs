@@ -100,4 +100,4 @@ and import it to js file.
 Examples is [here](/examples).
 
 # Document
-More details, see [M5Stackjs document](https://obniz.github.io/m5stackjs/classes/_m5stack_.m5stack.html) or [obniz document](https://obniz.io/doc/root)
+More details, see [M5Stackjs document](https://obniz.github.io/m5stackjs/classes/_src_m5stack_.m5stack.html) or [obniz document](https://obniz.io/doc/root)

@@ -51,7 +51,8 @@ module.exports = {
       name : "M5Stack.js",
       exclude : ["**/node_modules/!(obniz)/**/*.*", "**/node_modules/obniz/**/node_modules/**/*.*"],
       ignoreCompilerErrors : true,
-      includeDeclarations : true
+      includeDeclarations : true,
+      readme : "./README.md"
     }),
   ],
 };

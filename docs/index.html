@@ -62,211 +62,95 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<a href="#obnizjs-sdk-for-javascript" id="obnizjs-sdk-for-javascript" style="color: inherit; text-decoration: none;">
-					<h1>obniz.js: SDK for JavaScript</h1>
+				<a href="#m5stackjs" id="m5stackjs" style="color: inherit; text-decoration: none;">
+					<h1>M5Stack.js</h1>
 				</a>
-				<p><a href="https://badge.fury.io/js/obniz"><img src="https://badge.fury.io/js/obniz.svg" alt="npm version"></a>
-				<img src="https://img.shields.io/npm/dt/obniz.svg" alt=""> <a href="http://travis-ci.org/obniz/obniz"><img src="https://secure.travis-ci.org/obniz/obniz.png?branch=master" alt="Build Status"></a></p>
-				<p>SDK for controlling <a href="https://obniz.io/">obniz</a> using <a href="https://obniz.io/doc/about_obniz_api">obniz api</a> from JavaScript.</p>
-				<p>It works on both browser and nodejs.</p>
+				<p><img src="examples/html/display/3d-cubes/3d-cubes.JPG" alt="3d cubes"></p>
+				<p>SDK for controlling <a href="https://m5stack.com/">M5Stack</a> with <a href="https://obniz.io">obnizOS</a>.
+				It works on both browser and nodejs.</p>
 				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
-					<h2>Usage</h2>
+					<h1>Usage</h1>
 				</a>
-				<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+				<a href="#html" id="html" style="color: inherit; text-decoration: none;">
+					<h3>HTML</h3>
+				</a>
+				<pre><code class="language-html"><span class="hljs-meta">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.3.1.min.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://unpkg.com/obniz/obniz.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>obnizOS on M5Stack<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://obniz.io/js/jquery-3.2.1.min.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://unpkg.com/obniz@2.2.0/obniz.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://unpkg.com/m5stackjs/m5stack.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
 
-<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"text"</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"send"</span>&gt;</span>send<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"obniz-debug"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
 
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
-  <span class="hljs-keyword">var</span> obniz = <span class="hljs-keyword">new</span> Obniz(<span class="hljs-string">"0000-0000"</span>);
-  obniz.onconnect = <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-    <span class="hljs-comment">// embed parts</span>
-    obniz.display.print(<span class="hljs-string">"hello!"</span>);
-    obniz.switch.onchange = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">state</span>) </span>{
-      $(<span class="hljs-string">'body'</span>).css({
-        <span class="hljs-string">"background-color"</span> : (state == <span class="hljs-string">"push"</span>) ? <span class="hljs-string">"#F00"</span> : <span class="hljs-string">"#FFF"</span>
-        });
+  <span class="hljs-keyword">let</span> m5 = <span class="hljs-keyword">new</span> M5Stack(<span class="hljs-string">'OBNIZ_ID_HERE'</span>);
+
+  m5.onconnect = <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+
+    m5.buttonA.onchange = <span class="hljs-function">(<span class="hljs-params">state</span>)=&gt;</span>{
+      $(<span class="hljs-string">"#buttonA"</span>).text(state ? <span class="hljs-string">"pushed"</span> : <span class="hljs-string">"released"</span>);
     }
 
-    <span class="hljs-comment">// parts library</span>
-    <span class="hljs-keyword">var</span> servo = obniz.wired(<span class="hljs-string">"ServoMotor"</span>, {<span class="hljs-attr">gnd</span>:<span class="hljs-number">0</span>, <span class="hljs-attr">vcc</span>:<span class="hljs-number">1</span>, <span class="hljs-attr">signal</span>:<span class="hljs-number">2</span>});
+    <span class="hljs-keyword">await</span> m5.m5display.onWait();
+    m5.m5display.print(<span class="hljs-string">"Hello,world."</span>);
+    m5.m5display.print(<span class="hljs-string">"This text show from browser."</span>,<span class="hljs-string">"yellow"</span>);
+    m5.m5display.print(<span class="hljs-string">"こんにちは"</span>);
+    m5.m5display.print(<span class="hljs-string">"안녕하세요"</span>);
+
+    m5.m5display.font(<span class="hljs-string">'Noteworthy'</span>,<span class="hljs-number">40</span>);
+    m5.m5display.print(<span class="hljs-string">"Noteworthy"</span>,<span class="hljs-string">"#FF0000"</span>)
+
+    <span class="hljs-keyword">const</span> servo = obniz.wired(<span class="hljs-string">"ServoMotor"</span>, {<span class="hljs-attr">signal</span>:<span class="hljs-number">2</span>});
     servo.angle(<span class="hljs-number">90</span>);
-
-    <span class="hljs-comment">// peripherals</span>
-    <span class="hljs-keyword">var</span> uart = obniz.getFreeUart();
-    uart.start({<span class="hljs-attr">tx</span>: <span class="hljs-number">5</span>, <span class="hljs-attr">rx</span>: <span class="hljs-number">6</span>, <span class="hljs-attr">baud</span>:<span class="hljs-number">9600</span>});  
-
-    $(<span class="hljs-string">'#send'</span>).click(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-      uart.send($(<span class="hljs-string">"#text"</span>).val());
-    });
-
-    obniz.io7.drive(<span class="hljs-string">"5v"</span>)
-    obniz.io7.output(<span class="hljs-literal">true</span>)
-    obniz.io8.pull(<span class="hljs-string">"3v"</span>);
-    obniz.io8.drive(<span class="hljs-string">"open-drain"</span>);
-    obniz.io8.output(<span class="hljs-literal">false</span>);
-  }
+  };
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre>
-				<a href="#typescript" id="typescript" style="color: inherit; text-decoration: none;">
-					<h2>TypeScript</h2>
+				<a href="#nodejs" id="nodejs" style="color: inherit; text-decoration: none;">
+					<h3>nodejs</h3>
 				</a>
-				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> Obniz <span class="hljs-keyword">from</span> <span class="hljs-string">'obniz'</span>
+				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> M5Stack = <span class="hljs-built_in">require</span>(<span class="hljs-string">"m5stackjs"</span>);
 
-<span class="hljs-keyword">const</span> obniz = <span class="hljs-keyword">new</span> Obniz(<span class="hljs-string">"0000-0000"</span>);
-obniz.onconnect = <span class="hljs-keyword">async</span> () =&gt; {
+<span class="hljs-keyword">let</span> m5 = <span class="hljs-keyword">new</span> M5Stack(<span class="hljs-string">'OBNIZ_ID_HERE'</span>);
 
-  obniz.display.print(<span class="hljs-string">"hello!"</span>);
-  obniz.switch.onchange = <span class="hljs-function">(<span class="hljs-params">state: <span class="hljs-built_in">string</span></span>) =&gt;</span> {
-    <span class="hljs-built_in">console</span>.log(state);
+m5.onconnect = <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+  m5.buttonA.onchange = <span class="hljs-function">(<span class="hljs-params">state</span>) =&gt;</span> {
+      <span class="hljs-built_in">console</span>.log(state);
   }
-  <span class="hljs-keyword">const</span> servo = obniz.wired(<span class="hljs-string">"ServoMotor"</span>, {gnd:<span class="hljs-number">0</span>, vcc:<span class="hljs-number">1</span>, signal:<span class="hljs-number">2</span>});
+
+  <span class="hljs-keyword">const</span> servo = obniz.wired(<span class="hljs-string">"ServoMotor"</span>, {<span class="hljs-attr">signal</span>:<span class="hljs-number">2</span>});
   servo.angle(<span class="hljs-number">90</span>);
-}</code></pre>
+
+};
+</code></pre>
 				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
-					<h2>Installation</h2>
+					<h1>Installation</h1>
 				</a>
 				<a href="#browser" id="browser" style="color: inherit; text-decoration: none;">
 					<h3>Browser</h3>
 				</a>
 				<p>Add the following script tag to your html</p>
-				<pre><code class="language-html">  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://unpkg.com/obniz/obniz.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
-				<a href="#nodejs" id="nodejs" style="color: inherit; text-decoration: none;">
+				<pre><code class="language-html">  <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://unpkg.com/m5stackjs/m5stack.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+				<a href="#nodejs-1" id="nodejs-1" style="color: inherit; text-decoration: none;">
 					<h3>Nodejs</h3>
 				</a>
-				<p>Install obniz via npm</p>
-				<pre><code class="language-shell">  npm install obniz</code></pre>
-				<p>and import it to js file.</p>
-				<pre><code class="language-javascript">  <span class="hljs-keyword">const</span> Obniz = <span class="hljs-built_in">require</span>(<span class="hljs-string">'obniz'</span>);</code></pre>
-				<a href="#connect" id="connect" style="color: inherit; text-decoration: none;">
-					<h2>Connect</h2>
+				<p>Install via npm</p>
+				<pre><code>  npm <span class="hljs-keyword">install</span> m5stackjs</code></pre><p>and import it to js file.</p>
+				<pre><code class="language-nodejs">  const M5Stack = require(&#39;m5stackjs&#39;);</code></pre>
+				<a href="#examples" id="examples" style="color: inherit; text-decoration: none;">
+					<h1>Examples</h1>
 				</a>
-				<p>The details are on <a href="./doc/connection.md">doc/connection</a> (<a href="./doc/connection-ja.md">ja</a>)</p>
-				<p>To use obniz, instantiate obniz with obniz id, and set onconnect callback function. It will be called when connected to obniz successfully.</p>
-				<pre><code class="language-javascript">  <span class="hljs-keyword">var</span> obniz = <span class="hljs-keyword">new</span> Obniz(<span class="hljs-string">"0000-0000"</span>);
-  obniz.onconnect = <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-
-  }</code></pre>
-				<p>You can use everything on obniz once connection succeeds.</p>
-				<pre><code class="language-javascript">  <span class="hljs-keyword">var</span> obniz = <span class="hljs-keyword">new</span> Obniz(<span class="hljs-string">"0000-0000"</span>);
-  obniz.onconnect = <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-    obniz.display.print(<span class="hljs-string">"hello!"</span>);
-    obniz.switch.onchange = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">state</span>) </span>{
-      <span class="hljs-keyword">if</span> (state === <span class="hljs-string">"push"</span>) {
-        obniz.display.print(<span class="hljs-string">"Button Pressed"</span>);
-      }
-    }
-  }</code></pre>
-				<p>and its io peripherals too can be used</p>
-				<pre><code class="language-javascript">  <span class="hljs-keyword">var</span> obniz = <span class="hljs-keyword">new</span> Obniz(<span class="hljs-string">"0000-0000"</span>);
-  obniz.onconnect = <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-    obniz.io0.drive(<span class="hljs-string">"5v"</span>);
-    obniz.io0.output(<span class="hljs-literal">true</span>)
-    obniz.io1.pull(<span class="hljs-string">"3v"</span>);
-    obniz.io1.drive(<span class="hljs-string">"open-drain"</span>);
-    obniz.io1.output(<span class="hljs-literal">false</span>);
-    obniz.io2.drive(<span class="hljs-string">"3v"</span>);
-    obniz.io2.output(<span class="hljs-literal">true</span>);
-
-    obniz.ad3.start(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">voltage</span>)</span>{
-      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"changed to "</span>+voltage+<span class="hljs-string">" v"</span>)
-    });
-
-    <span class="hljs-keyword">var</span> pwm = obniz.getFreePwm();
-    pwm.start({<span class="hljs-attr">io</span>: <span class="hljs-number">4</span>});
-    pwm.freq(<span class="hljs-number">1000</span>);
-    pwm.duty(<span class="hljs-number">50</span>);
-
-    <span class="hljs-keyword">var</span> uart = obniz.getFreeUart();
-    uart.start({<span class="hljs-attr">tx</span>: <span class="hljs-number">5</span>, <span class="hljs-attr">rx</span>: <span class="hljs-number">6</span>, <span class="hljs-attr">baud</span>:<span class="hljs-number">9600</span>});  
-    uart.onreceive = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data, text</span>) </span>{
-      <span class="hljs-built_in">console</span>.log(data);
-    }
-    uart.send(<span class="hljs-string">"Hello"</span>);
-  }</code></pre>
-				<a href="#parts-library" id="parts-library" style="color: inherit; text-decoration: none;">
-					<h2>Parts library</h2>
+				<p>Examples is <a href="/examples">here</a>.</p>
+				<a href="#document" id="document" style="color: inherit; text-decoration: none;">
+					<h1>Document</h1>
 				</a>
-				<p>The parts library is embedded in obniz.js.
-				All parts and their details can be found there.</p>
-				<p><a href="https://obniz.io/sdk/parts/">obniz Parts Library</a></p>
-				<p>To use the connected parts, instantiate the parts in onconnect callback function and use it. The function list can be found on <a href="https://obniz.io/sdk/parts/">obniz Parts Library</a>.</p>
-				<p>For example, LED is found here <a href="https://obniz.io/sdk/parts/LED">https://obniz.io/sdk/parts/LED</a></p>
-				<pre><code class="language-javascript">  <span class="hljs-keyword">var</span> obniz = <span class="hljs-keyword">new</span> Obniz(<span class="hljs-string">"0000-0000"</span>);
-  obniz.onconnect = <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-    <span class="hljs-keyword">var</span> led = obniz.wired(<span class="hljs-string">"LED"</span>, {<span class="hljs-attr">anode</span>:<span class="hljs-number">0</span>, <span class="hljs-attr">cathode</span>:<span class="hljs-number">1</span>});
-    led.blink();
-  }</code></pre>
-				<p>HC-SR40(distance measure) <a href="https://obniz.io/sdk/parts/HC-SR04">https://obniz.io/sdk/parts/HC-SR04</a></p>
-				<pre><code class="language-javascript">  <span class="hljs-keyword">var</span> obniz = <span class="hljs-keyword">new</span> Obniz(<span class="hljs-string">"0000-0000"</span>);
-  obniz.onconnect = <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-    <span class="hljs-keyword">var</span> hcsr04 = obniz.wired(<span class="hljs-string">"HC-SR04"</span>, {<span class="hljs-attr">gnd</span>:<span class="hljs-number">0</span>, <span class="hljs-attr">echo</span>:<span class="hljs-number">1</span>, <span class="hljs-attr">trigger</span>:<span class="hljs-number">2</span>, <span class="hljs-attr">vcc</span>:<span class="hljs-number">3</span>});
-    hcsr04.unit(<span class="hljs-string">"inch"</span>);
-    hcsr04.measure(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> distance </span>)</span>{
-      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"distance "</span> + distance + <span class="hljs-string">" inch"</span>)
-    })
-  }</code></pre>
-				<a href="#example-browser-integrates-hardware" id="example-browser-integrates-hardware" style="color: inherit; text-decoration: none;">
-					<h2>Example: browser integrates hardware</h2>
-				</a>
-				<p>It is easy to integrate UI and hardware on html</p>
-				<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"slider"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"range"</span>  <span class="hljs-attr">min</span>=<span class="hljs-string">"0"</span> <span class="hljs-attr">max</span>=<span class="hljs-string">"180"</span> /&gt;</span>
-
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://unpkg.com/obniz/obniz.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
-<span class="hljs-keyword">var</span> obniz = <span class="hljs-keyword">new</span> Obniz(<span class="hljs-string">"0000-0000"</span>);
-obniz.onconnect = <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-  <span class="hljs-keyword">var</span> servo = obniz.wired(<span class="hljs-string">"ServoMotor"</span>, {<span class="hljs-attr">gnd</span>:<span class="hljs-number">0</span>, <span class="hljs-attr">vcc</span>:<span class="hljs-number">1</span>, <span class="hljs-attr">signal</span>:<span class="hljs-number">2</span>});
-  $(<span class="hljs-string">"#slider"</span>).on(<span class="hljs-string">'input'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-    servo.angle($(<span class="hljs-string">"#slider"</span>).val())
-  });
-}
-</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
-				<a href="#example-integrate-web-services" id="example-integrate-web-services" style="color: inherit; text-decoration: none;">
-					<h2>Example: integrate web services</h2>
-				</a>
-				<p>It is also easy to integrate web services like Dropbox and Twitter and hardware.</p>
-				<pre><code class="language-javascript"><span class="hljs-comment">// save data from obniz to dropbox</span>
-<span class="hljs-keyword">var</span> obniz = <span class="hljs-keyword">new</span> Obniz(<span class="hljs-string">"0000-0000"</span>);
-obniz.onconnect = <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-  <span class="hljs-keyword">var</span> dbx = <span class="hljs-keyword">new</span> Dropbox({ <span class="hljs-attr">accessToken</span>: <span class="hljs-string">'&lt;YOUR ACCESS TOKEN HERE&gt;'</span> });
-  <span class="hljs-keyword">var</span> button = obniz.wired(<span class="hljs-string">"Button"</span>,  {<span class="hljs-attr">signal</span>:<span class="hljs-number">0</span>, <span class="hljs-attr">gnd</span>:<span class="hljs-number">1</span>});
-  button.onchange = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">pressed</span>)</span>{
-    <span class="hljs-keyword">if</span> (pressed) {
-  　　dbx.filesUpload({<span class="hljs-attr">path</span>: <span class="hljs-string">'/obniz.txt'</span>, <span class="hljs-attr">contents</span>: <span class="hljs-string">"[Button Pressed]\n"</span> + <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(), <span class="hljs-attr">mode</span>: <span class="hljs-string">'overwrite'</span> });
-    }
-  };
-}</code></pre>
-				<a href="#example-integrate-two-or-more-obniz" id="example-integrate-two-or-more-obniz" style="color: inherit; text-decoration: none;">
-					<h2>Example: integrate two or more obniz</h2>
-				</a>
-				<p>Not only is web-obniz coordination easy, but obniz-obniz coordination is also easy.</p>
-				<pre><code class="language-javascript"><span class="hljs-comment">// control servomotor from potention meter which connected to another obniz.</span>
-<span class="hljs-keyword">var</span> obnizA = <span class="hljs-keyword">new</span> Obniz(<span class="hljs-string">"0000-0000"</span>);
-obnizA.onconnect = <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-  <span class="hljs-keyword">var</span> obnizB = <span class="hljs-keyword">new</span> Obniz(<span class="hljs-string">"0000-0001"</span>);
-  obnizB.onconnect = <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
-    <span class="hljs-keyword">var</span> meter = obnizA.wired(<span class="hljs-string">"Potentiometer"</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
-    <span class="hljs-keyword">var</span> servo = obnizB.wired(<span class="hljs-string">"ServoMotor"</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
-    meter.onchange = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">position</span>) </span>{
-      servo.angle(position * <span class="hljs-number">180</span>);
-    }; 
-  }
-}</code></pre>
-				<a href="#documentation" id="documentation" style="color: inherit; text-decoration: none;">
-					<h2>Documentation</h2>
-				</a>
-				<p>You can find the documentation on <a href="https://obniz.io/doc/">the website</a>.</p>
-				<a href="#lisence" id="lisence" style="color: inherit; text-decoration: none;">
-					<h2>Lisence</h2>
-				</a>
-				<p>See <a href="./LICENSE.txt">LICENSE.txt</a></p>
+				<p>More details, see <a href="https://obniz.github.io/m5stackjs/classes/_m5stack_.m5stack.html">M5Stackjs document</a> or <a href="https://obniz.io/doc/root">obniz document</a></p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">

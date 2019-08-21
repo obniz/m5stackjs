@@ -9,6 +9,13 @@ export class AK8963 {
     private params:any;
     private i2c?:I2C;
 
+    private address = 0x0c;
+    private commands = {
+        whoami : 0x00,
+        whoami_results : 0x48,
+    };
+
+
 
     public static info() {
         return {
@@ -28,9 +35,22 @@ export class AK8963 {
 
         // @ts-ignore
         this.i2c = this.obniz.getI2CWithConfig(this.params);
-
-        this.obniz.wait(500);
     }
 
 
+    public async whoamiWait(){
+        this.i2c!.write(this.address, [this.commands.whoami]);
+        return await this.i2c!.readWait(this.address, 1)
+    }
+
+
+
+
+    private char2short(values: [number, number]): number {
+        const buffer = new ArrayBuffer(2);
+        const dv = new DataView(buffer);
+        dv.setUint8(0, values[0]);
+        dv.setUint8(1, values[1]);
+        return dv.getInt16(0, false );
+    }
 }

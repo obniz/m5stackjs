@@ -255,7 +255,7 @@ class M5Display {
                 this._canvas = createCanvas(this.width, this.height);
             }
             catch (e) {
-                // this.warnCanvasAvailability();
+                this.warnCanvasAvailability();
                 return null;
             }
         }
@@ -336,6 +336,9 @@ class M5Display {
             ctx.fillText(text, this._pos.x, this._pos.y + this.fontSize);
             this.draw(ctx);
             this._pos.y += this.fontSize;
+        }
+        else {
+            this.warnCanvasAvailability();
         }
     }
     line(x_0, y_0, x_1, y_1) {

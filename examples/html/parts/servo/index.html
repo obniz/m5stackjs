@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>obnizOS on M5Stack</title>
+  <script src="https://obniz.io/js/jquery-3.2.1.min.js"></script>
+  <script src="https://unpkg.com/obniz@2.2.0/obniz.js"></script>
+  <script src="https://unpkg.com/m5stackjs/m5stack.js"></script>
+</head>
+<body>
+
+<div id="obniz-debug"></div>
+buttonA:<span id="buttonA"></span><br/>
+
+
+<script>
+  let m5 = new M5Stack('01067965');
+
+  m5.onconnect = async function () {
+
+    m5.buttonA.onchange = (state)=>{
+      $("#buttonA").text(state ? "pushed" : "released");
+    }
+
+    await m5.m5display.onWait();
+    m5.m5display.print("Hello,world.");
+    m5.m5display.print("This text show from browser.","yellow");
+    m5.m5display.print("こんにちは");
+    m5.m5display.print("안녕하세요");
+
+    m5.m5display.font('Noteworthy',40);
+    m5.m5display.print("Noteworthy","#FF0000")
+
+    const servo = m5.wired("ServoMotor", {signal:2});
+    servo.angle(90);
+  };
+</script>
+</body>
+</html>

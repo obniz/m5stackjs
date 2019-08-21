@@ -107,7 +107,7 @@ export class M5Display {
         // @ts-ignore
         if (this.obniz.isNode) {
             throw new Error(
-                "obniz.js require node-canvas to draw rich contents. see more detail on docs",
+                "obniz.js require node-canvas to draw rich contents. Please run `npm install canvas`",
             );
         } else {
             throw new Error("obniz.js cant create canvas element to body");
@@ -124,7 +124,7 @@ export class M5Display {
                 const { createCanvas } = require("canvas");
                 this._canvas = createCanvas(this.width, this.height);
             } catch (e) {
-                // this.warnCanvasAvailability();
+                this.warnCanvasAvailability();
                 return null;
             }
         } else {
@@ -210,6 +210,8 @@ export class M5Display {
             ctx.fillText(text, this._pos.x, this._pos.y + this.fontSize);
             this.draw(ctx);
             this._pos.y += this.fontSize;
+        } else {
+            this.warnCanvasAvailability();
         }
     }
 

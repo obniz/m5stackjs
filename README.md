@@ -45,8 +45,8 @@ buttonA:<span id="buttonA"></span><br/>
     m5.m5display.font('Noteworthy',40);
     m5.m5display.print("Noteworthy","#FF0000")
 
-	const servo = m5.wired("ServoMotor", {signal:2});
-	servo.angle(90);
+    const servo = m5.wired("ServoMotor", {signal:2});
+    servo.angle(90);
   };
 </script>
 </body>

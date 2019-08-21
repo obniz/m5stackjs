@@ -8,9 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-class AK8963 {
+class Ak8963 {
     constructor() {
-        this.keys = ['gnd', 'sda', 'scl', 'i2c'];
+        this.keys = ["gnd", "sda", "scl", "i2c"];
         this.requiredKeys = [];
         this.address = 0x0c;
         this.commands = {
@@ -20,16 +20,16 @@ class AK8963 {
     }
     static info() {
         return {
-            name: 'AK8963',
+            name: "Ak8963",
         };
     }
     wired(obniz) {
         this.obniz = obniz;
         // @ts-ignore
-        obniz.setVccGnd(null, this.params.gnd, '3v');
+        obniz.setVccGnd(null, this.params.gnd, "3v");
         this.params.clock = 100000;
-        this.params.pull = '3v';
-        this.params.mode = 'master';
+        this.params.pull = "3v";
+        this.params.mode = "master";
         // @ts-ignore
         this.i2c = this.obniz.getI2CWithConfig(this.params);
     }
@@ -47,4 +47,4 @@ class AK8963 {
         return dv.getInt16(0, false);
     }
 }
-exports.AK8963 = AK8963;
+exports.Ak8963 = Ak8963;

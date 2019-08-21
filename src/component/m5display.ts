@@ -256,6 +256,17 @@ export class M5Display {
         }
     }
 
+    public async onWait() {
+        this.getIO(32).output(true);
+        await this.obniz.wait(1);
+        await this.lcd_init();
+        this.ready = true;
+    }
+    public off() {
+        this.getIO(32).output(false);
+        this.ready = false;
+    }
+
     private setup() {
 
         this.getIO(this.m5defines.TFT_CS).output(false);
@@ -270,20 +281,7 @@ export class M5Display {
             frequency: 26 * 1000 * 1000,
         });
 
-
     }
-
-    public async onWait(){
-        this.getIO(32).output(true);
-        await this.obniz.wait(1);
-        await this.lcd_init();
-        this.ready = true;
-    }
-    public off(){
-        this.getIO(32).output(false);
-        this.ready = false;
-    }
-
 
     private write_command(c: number) {
         this.getIO(this.m5defines.TFT_RS).output(false);

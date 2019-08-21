@@ -8,9 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-class MPU6500 {
+class Mpu6500 {
     constructor() {
-        this.keys = ['gnd', 'sda', 'scl', 'i2c'];
+        this.keys = ["gnd", "sda", "scl", "i2c"];
         this.requiredKeys = [];
         this.address = 0x68;
         this.commands = {
@@ -31,7 +31,7 @@ class MPU6500 {
             gyro_z_l: 0x48,
         };
         this.intPinConfigMask = {
-            "bypass_en": 0b00000010,
+            bypass_en: 0b00000010,
         };
         this.settingParams = {
             accel: {
@@ -52,24 +52,24 @@ class MPU6500 {
                     "2000dps": 16.4,
                 },
                 deg: 1,
-                rad: 57.295779578552 //1 rad/s is 57.295779578552 deg/s
-            }
+                rad: 57.295779578552,
+            },
         };
         this.accel_so = "2g";
         this.gyro_so = "250dps";
     }
     static info() {
         return {
-            name: 'MPU6500',
+            name: "MPU6500",
         };
     }
     wired(obniz) {
         this.obniz = obniz;
         // @ts-ignore
-        obniz.setVccGnd(null, this.params.gnd, '3v');
+        obniz.setVccGnd(null, this.params.gnd, "3v");
         this.params.clock = 100000;
-        this.params.pull = '3v';
-        this.params.mode = 'master';
+        this.params.pull = "3v";
+        this.params.mode = "master";
         // @ts-ignore
         this.i2c = this.obniz.getI2CWithConfig(this.params);
     }
@@ -77,7 +77,7 @@ class MPU6500 {
         return __awaiter(this, void 0, void 0, function* () {
             // Enable I2C bypass to access for MPU9250 magnetometer access.
             this.i2c.write(this.address, [this.commands.int_pin_config]);
-            let data = yield this.i2c.readWait(this.address, 1);
+            const data = yield this.i2c.readWait(this.address, 1);
             data[0] |= this.intPinConfigMask.bypass_en;
             this.i2c.write(this.address, [this.commands.int_pin_config, data[0]]);
         });
@@ -91,9 +91,9 @@ class MPU6500 {
     gyroWait() {
         return __awaiter(this, void 0, void 0, function* () {
             this.i2c.write(this.address, [this.commands.gyro_x_h]);
-            let data = yield this.i2c.readWait(this.address, 6);
+            const data = yield this.i2c.readWait(this.address, 6);
             const { gyro } = this.settingParams;
-            let scale = gyro.deg / gyro.so[this.gyro_so];
+            const scale = gyro.deg / gyro.so[this.gyro_so];
             return {
                 x: this.char2short(data.slice(0, 2)) * scale,
                 y: this.char2short(data.slice(2, 4)) * scale,
@@ -104,9 +104,9 @@ class MPU6500 {
     accelerationWait() {
         return __awaiter(this, void 0, void 0, function* () {
             this.i2c.write(this.address, [this.commands.accel_x_h]);
-            let data = yield this.i2c.readWait(this.address, 6);
+            const data = yield this.i2c.readWait(this.address, 6);
             const { accel } = this.settingParams;
-            let scale = accel.m_s2 / accel.so[this.accel_so];
+            const scale = accel.m_s2 / accel.so[this.accel_so];
             return {
                 x: this.char2short(data.slice(0, 2)) * scale,
                 y: this.char2short(data.slice(2, 4)) * scale,
@@ -122,4 +122,4 @@ class MPU6500 {
         return dv.getInt16(0, false);
     }
 }
-exports.MPU6500 = MPU6500;
+exports.Mpu6500 = Mpu6500;

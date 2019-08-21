@@ -232,18 +232,6 @@ class M5Display {
             this.warnCanvasAvailability();
         }
     }
-    setup() {
-        this.getIO(this.m5defines.TFT_CS).output(false);
-        this.getIO(this.m5defines.TFT_RESET).output(false);
-        this.getIO(this.m5defines.TFT_RS).output(true);
-        // @ts-ignore
-        this.spi.start({
-            mode: "master",
-            clk: this.m5defines.TFT_SCK,
-            mosi: this.m5defines.TFT_MOSI,
-            frequency: 26 * 1000 * 1000,
-        });
-    }
     onWait() {
         return __awaiter(this, void 0, void 0, function* () {
             this.getIO(32).output(true);
@@ -255,6 +243,18 @@ class M5Display {
     off() {
         this.getIO(32).output(false);
         this.ready = false;
+    }
+    setup() {
+        this.getIO(this.m5defines.TFT_CS).output(false);
+        this.getIO(this.m5defines.TFT_RESET).output(false);
+        this.getIO(this.m5defines.TFT_RS).output(true);
+        // @ts-ignore
+        this.spi.start({
+            mode: "master",
+            clk: this.m5defines.TFT_SCK,
+            mosi: this.m5defines.TFT_MOSI,
+            frequency: 26 * 1000 * 1000,
+        });
     }
     write_command(c) {
         this.getIO(this.m5defines.TFT_RS).output(false);

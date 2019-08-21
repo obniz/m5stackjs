@@ -101,9 +101,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-class AK8963 {
+class Ak8963 {
     constructor() {
-        this.keys = ['gnd', 'sda', 'scl', 'i2c'];
+        this.keys = ["gnd", "sda", "scl", "i2c"];
         this.requiredKeys = [];
         this.address = 0x0c;
         this.commands = {
@@ -113,16 +113,16 @@ class AK8963 {
     }
     static info() {
         return {
-            name: 'AK8963',
+            name: "Ak8963",
         };
     }
     wired(obniz) {
         this.obniz = obniz;
         // @ts-ignore
-        obniz.setVccGnd(null, this.params.gnd, '3v');
+        obniz.setVccGnd(null, this.params.gnd, "3v");
         this.params.clock = 100000;
-        this.params.pull = '3v';
-        this.params.mode = 'master';
+        this.params.pull = "3v";
+        this.params.mode = "master";
         // @ts-ignore
         this.i2c = this.obniz.getI2CWithConfig(this.params);
     }
@@ -140,7 +140,7 @@ class AK8963 {
         return dv.getInt16(0, false);
     }
 }
-exports.AK8963 = AK8963;
+exports.Ak8963 = Ak8963;
 
 
 /***/ }),
@@ -383,18 +383,6 @@ class M5Display {
             this.warnCanvasAvailability();
         }
     }
-    setup() {
-        this.getIO(this.m5defines.TFT_CS).output(false);
-        this.getIO(this.m5defines.TFT_RESET).output(false);
-        this.getIO(this.m5defines.TFT_RS).output(true);
-        // @ts-ignore
-        this.spi.start({
-            mode: "master",
-            clk: this.m5defines.TFT_SCK,
-            mosi: this.m5defines.TFT_MOSI,
-            frequency: 26 * 1000 * 1000,
-        });
-    }
     onWait() {
         return __awaiter(this, void 0, void 0, function* () {
             this.getIO(32).output(true);
@@ -406,6 +394,18 @@ class M5Display {
     off() {
         this.getIO(32).output(false);
         this.ready = false;
+    }
+    setup() {
+        this.getIO(this.m5defines.TFT_CS).output(false);
+        this.getIO(this.m5defines.TFT_RESET).output(false);
+        this.getIO(this.m5defines.TFT_RS).output(true);
+        // @ts-ignore
+        this.spi.start({
+            mode: "master",
+            clk: this.m5defines.TFT_SCK,
+            mosi: this.m5defines.TFT_MOSI,
+            frequency: 26 * 1000 * 1000,
+        });
     }
     write_command(c) {
         this.getIO(this.m5defines.TFT_RS).output(false);
@@ -506,9 +506,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-class MPU6500 {
+class Mpu6500 {
     constructor() {
-        this.keys = ['gnd', 'sda', 'scl', 'i2c'];
+        this.keys = ["gnd", "sda", "scl", "i2c"];
         this.requiredKeys = [];
         this.address = 0x68;
         this.commands = {
@@ -529,7 +529,7 @@ class MPU6500 {
             gyro_z_l: 0x48,
         };
         this.intPinConfigMask = {
-            "bypass_en": 0b00000010,
+            bypass_en: 0b00000010,
         };
         this.settingParams = {
             accel: {
@@ -550,24 +550,24 @@ class MPU6500 {
                     "2000dps": 16.4,
                 },
                 deg: 1,
-                rad: 57.295779578552 //1 rad/s is 57.295779578552 deg/s
-            }
+                rad: 57.295779578552,
+            },
         };
         this.accel_so = "2g";
         this.gyro_so = "250dps";
     }
     static info() {
         return {
-            name: 'MPU6500',
+            name: "MPU6500",
         };
     }
     wired(obniz) {
         this.obniz = obniz;
         // @ts-ignore
-        obniz.setVccGnd(null, this.params.gnd, '3v');
+        obniz.setVccGnd(null, this.params.gnd, "3v");
         this.params.clock = 100000;
-        this.params.pull = '3v';
-        this.params.mode = 'master';
+        this.params.pull = "3v";
+        this.params.mode = "master";
         // @ts-ignore
         this.i2c = this.obniz.getI2CWithConfig(this.params);
     }
@@ -575,7 +575,7 @@ class MPU6500 {
         return __awaiter(this, void 0, void 0, function* () {
             // Enable I2C bypass to access for MPU9250 magnetometer access.
             this.i2c.write(this.address, [this.commands.int_pin_config]);
-            let data = yield this.i2c.readWait(this.address, 1);
+            const data = yield this.i2c.readWait(this.address, 1);
             data[0] |= this.intPinConfigMask.bypass_en;
             this.i2c.write(this.address, [this.commands.int_pin_config, data[0]]);
         });
@@ -589,9 +589,9 @@ class MPU6500 {
     gyroWait() {
         return __awaiter(this, void 0, void 0, function* () {
             this.i2c.write(this.address, [this.commands.gyro_x_h]);
-            let data = yield this.i2c.readWait(this.address, 6);
+            const data = yield this.i2c.readWait(this.address, 6);
             const { gyro } = this.settingParams;
-            let scale = gyro.deg / gyro.so[this.gyro_so];
+            const scale = gyro.deg / gyro.so[this.gyro_so];
             return {
                 x: this.char2short(data.slice(0, 2)) * scale,
                 y: this.char2short(data.slice(2, 4)) * scale,
@@ -602,9 +602,9 @@ class MPU6500 {
     accelerationWait() {
         return __awaiter(this, void 0, void 0, function* () {
             this.i2c.write(this.address, [this.commands.accel_x_h]);
-            let data = yield this.i2c.readWait(this.address, 6);
+            const data = yield this.i2c.readWait(this.address, 6);
             const { accel } = this.settingParams;
-            let scale = accel.m_s2 / accel.so[this.accel_so];
+            const scale = accel.m_s2 / accel.so[this.accel_so];
             return {
                 x: this.char2short(data.slice(0, 2)) * scale,
                 y: this.char2short(data.slice(2, 4)) * scale,
@@ -620,7 +620,7 @@ class MPU6500 {
         return dv.getInt16(0, false);
     }
 }
-exports.MPU6500 = MPU6500;
+exports.Mpu6500 = Mpu6500;
 
 
 /***/ }),
@@ -631,34 +631,34 @@ exports.MPU6500 = MPU6500;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-class MPU9250 {
+class Mpu9250 {
     constructor() {
-        this.keys = ['gnd', 'sda', 'scl', 'i2c'];
+        this.keys = ["gnd", "sda", "scl", "i2c"];
         this.requiredKeys = [];
     }
     static info() {
         return {
-            name: 'MPU9250',
+            name: "MPU9250",
         };
     }
     wired(obniz) {
         this.obniz = obniz;
         // @ts-ignore
-        obniz.setVccGnd(null, this.params.gnd, '3v');
+        obniz.setVccGnd(null, this.params.gnd, "3v");
         this.params.clock = 100000;
-        this.params.pull = '3v';
-        this.params.mode = 'master';
+        this.params.pull = "3v";
+        this.params.mode = "master";
         // @ts-ignore
         this.i2c = this.obniz.getI2CWithConfig(this.params);
-        //@ts-ignore
-        this.ak8963 = this.obniz.wired("AK8963", { i2c: this.i2c });
-        //@ts-ignore
+        // @ts-ignore
+        this.ak8963 = this.obniz.wired("Ak8963", { i2c: this.i2c });
+        // @ts-ignore
         this.mpu6500 = this.obniz.wired("MPU6500", { i2c: this.i2c });
         this.mpu6500.bypassMagnetometerWait();
         this.obniz.wait(500);
     }
 }
-exports.MPU9250 = MPU9250;
+exports.Mpu9250 = Mpu9250;
 
 
 /***/ }),
@@ -689,11 +689,11 @@ const ak8963_1 = __webpack_require__("./src/component/ak8963.ts");
 const mpu6500_1 = __webpack_require__("./src/component/mpu6500.ts");
 const mpu9250_1 = __webpack_require__("./src/component/mpu9250.ts");
 // @ts-ignore
-obniz_1.default.PartsRegistrate(ak8963_1.AK8963);
+obniz_1.default.PartsRegistrate(ak8963_1.Ak8963);
 // @ts-ignore
-obniz_1.default.PartsRegistrate(mpu6500_1.MPU6500);
+obniz_1.default.PartsRegistrate(mpu6500_1.Mpu6500);
 // @ts-ignore
-obniz_1.default.PartsRegistrate(mpu9250_1.MPU9250);
+obniz_1.default.PartsRegistrate(mpu9250_1.Mpu9250);
 class M5Stack extends obniz_1.default {
     constructor(id, options) {
         super(id, options);
@@ -712,16 +712,16 @@ class M5Stack extends obniz_1.default {
             "buttonB",
             "buttonC",
         ];
-        for (let key of keys) {
+        for (const key of keys) {
             // @ts-ignore
             this._allComponentKeys.push(key);
         }
     }
     setupIMU() {
-        //@ts-ignore
+        // @ts-ignore
         this.mpu9250 = this.wired("MPU9250", { sda: 21, scl: 22 });
         // @ts-ignore
-        this._allComponentKeys.push("mpu9250");
+        this._allComponentKeys.push("MPU9250");
         this.hasIMU = true;
     }
     gyroWait() {

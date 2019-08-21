@@ -3,17 +3,21 @@ import {I2C} from "obniz/obniz/libs/io_peripherals/i2c";
 
 export type accelScale = "2g" | "4g" | "8g" | "16g";
 export type gyroScale = "250dps" | "500dps" | "1000dps" | "2000dps";
-export type xyz = {x : number, y:number, z:number};
+export interface Xyz {x: number; y: number; z: number; }
 
+export class Mpu6500 {
 
-
-export class MPU6500 {
-    public keys = ['gnd', 'sda', 'scl', 'i2c'];
+    public static info() {
+        return {
+            name: "MPU6500",
+        };
+    }
+    public keys = ["gnd", "sda", "scl", "i2c"];
     public requiredKeys = [];
-    private obniz?:Obniz;
+    private obniz?: Obniz;
 
-    private params:any;
-    private i2c?:I2C;
+    private params: any;
+    private i2c?: I2C;
 
     private address = 0x68;
 
@@ -39,13 +43,12 @@ export class MPU6500 {
 
     };
 
-    private intPinConfigMask ={
-        "bypass_en" : 0b00000010,
-    }
-
+    private intPinConfigMask = {
+        bypass_en : 0b00000010,
+    };
 
     private settingParams = {
-        accel :{
+        accel : {
             so : {
                 "2g" : 16384,  // 1 / 16384 ie. 0.061 mg / digit
                 "4g" : 8192,   //  1 / 8192 ie. 0.122 mg / digit
@@ -63,79 +66,69 @@ export class MPU6500 {
                 "2000dps" : 16.4,
             },
             deg :  1,
-            rad :  57.295779578552 //1 rad/s is 57.295779578552 deg/s
-        }
+            rad :  57.295779578552, // 1 rad/s is 57.295779578552 deg/s
+        },
     };
 
-    private accel_so :accelScale =   "2g";
-    private gyro_so :gyroScale =   "250dps";
+    private accel_so: accelScale =   "2g";
+    private gyro_so: gyroScale =   "250dps";
 
-
-    public static info() {
-        return {
-            name: 'MPU6500',
-        };
-    }
-
-    public wired(obniz:Obniz) {
+    public wired(obniz: Obniz) {
         this.obniz = obniz;
 
         // @ts-ignore
-        obniz.setVccGnd(null, this.params.gnd, '3v');
+        obniz.setVccGnd(null, this.params.gnd, "3v");
 
         this.params.clock = 100000;
-        this.params.pull = '3v';
-        this.params.mode = 'master';
+        this.params.pull = "3v";
+        this.params.mode = "master";
 
         // @ts-ignore
         this.i2c = this.obniz.getI2CWithConfig(this.params);
 
-
-
     }
 
-    public async bypassMagnetometerWait(){
+    public async bypassMagnetometerWait() {
         // Enable I2C bypass to access for MPU9250 magnetometer access.
         this.i2c!.write(this.address, [this.commands.int_pin_config]);
-        let data =  await this.i2c!.readWait(this.address, 1)
+        const data =  await this.i2c!.readWait(this.address, 1);
 
         data[0] |= this.intPinConfigMask.bypass_en;
 
         this.i2c!.write(this.address, [this.commands.int_pin_config, data[0]]);
     }
 
-
-    public async whoamiWait(){
+    public async whoamiWait() {
         this.i2c!.write(this.address, [this.commands.whoami]);
-        return await this.i2c!.readWait(this.address, 1)
+        return await this.i2c!.readWait(this.address, 1);
     }
 
-    public async gyroWait(): Promise<xyz>{
+    public async gyroWait(): Promise<Xyz> {
         this.i2c!.write(this.address, [this.commands.gyro_x_h]);
-        let data =  await this.i2c!.readWait(this.address, 6) as number[];
+        const data =  await this.i2c!.readWait(this.address, 6) as number[];
         const {gyro} = this.settingParams;
-        let scale = gyro.deg / gyro.so[this.gyro_so];
+        const scale = gyro.deg / gyro.so[this.gyro_so];
 
         return {
-            x : this.char2short(data.slice(0,2) as [number,number]) * scale,
-            y : this.char2short(data.slice(2,4) as [number,number]) * scale,
-            z : this.char2short(data.slice(4,6) as [number,number]) * scale,
-        }
+            x : this.char2short(data.slice(0, 2) as [number, number]) * scale,
+            y : this.char2short(data.slice(2, 4) as [number, number]) * scale,
+            z : this.char2short(data.slice(4, 6) as [number, number]) * scale,
+        };
 
     }
 
-    public async accelerationWait() : Promise<xyz>{
+    public async accelerationWait(): Promise<Xyz> {
         this.i2c!.write(this.address, [this.commands.accel_x_h]);
-        let data =  await this.i2c!.readWait(this.address, 6) as number[];
+        const data =  await this.i2c!.readWait(this.address, 6) as number[];
 
         const {accel} = this.settingParams;
-        let scale = accel.m_s2 / accel.so[this.accel_so];
+        const scale = accel.m_s2 / accel.so[this.accel_so];
 
         return {
-            x : this.char2short(data.slice(0,2) as [number,number]) * scale,
-            y : this.char2short(data.slice(2,4) as [number,number]) * scale,
-            z : this.char2short(data.slice(4,6) as [number,number]) * scale,
-        }
+            x : this.char2short(data.slice(0, 2) as [number, number]) * scale,
+            y : this.char2short(data.slice(2, 4) as [number, number]) * scale,
+            z : this.char2short(data.slice(4, 6) as [number, number]) * scale,
+        };
 
     }
 
@@ -146,6 +139,5 @@ export class MPU6500 {
         dv.setUint8(1, values[1]);
         return dv.getInt16(0, false );
     }
-
 
 }

@@ -9,11 +9,11 @@ const ak8963_1 = require("./component/ak8963");
 const mpu6500_1 = require("./component/mpu6500");
 const mpu9250_1 = require("./component/mpu9250");
 // @ts-ignore
-obniz_1.default.PartsRegistrate(ak8963_1.AK8963);
+obniz_1.default.PartsRegistrate(ak8963_1.Ak8963);
 // @ts-ignore
-obniz_1.default.PartsRegistrate(mpu6500_1.MPU6500);
+obniz_1.default.PartsRegistrate(mpu6500_1.Mpu6500);
 // @ts-ignore
-obniz_1.default.PartsRegistrate(mpu9250_1.MPU9250);
+obniz_1.default.PartsRegistrate(mpu9250_1.Mpu9250);
 class M5Stack extends obniz_1.default {
     constructor(id, options) {
         super(id, options);
@@ -32,16 +32,16 @@ class M5Stack extends obniz_1.default {
             "buttonB",
             "buttonC",
         ];
-        for (let key of keys) {
+        for (const key of keys) {
             // @ts-ignore
             this._allComponentKeys.push(key);
         }
     }
     setupIMU() {
-        //@ts-ignore
+        // @ts-ignore
         this.mpu9250 = this.wired("MPU9250", { sda: 21, scl: 22 });
         // @ts-ignore
-        this._allComponentKeys.push("mpu9250");
+        this._allComponentKeys.push("MPU9250");
         this.hasIMU = true;
     }
     gyroWait() {

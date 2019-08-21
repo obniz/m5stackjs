@@ -44,7 +44,7 @@ It works on both browser and nodejs.
     m5.m5display.font('Noteworthy',40);
     m5.m5display.print("Noteworthy","#FF0000")
 
-	const servo = obniz.wired("ServoMotor", {signal:2});
+	const servo = m5.wired("ServoMotor", {signal:2});
 	servo.angle(90);
   };
 </script>
@@ -65,7 +65,7 @@ m5.onconnect = async function () {
       console.log(state);
   }
   
-  const servo = obniz.wired("ServoMotor", {signal:2});
+  const servo = m5.wired("ServoMotor", {signal:2});
   servo.angle(90);
 
 };
@@ -78,6 +78,7 @@ m5.onconnect = async function () {
 Add the following script tag to your html
 
 ```html
+  <script src="https://unpkg.com/obniz/obniz.js"></script> <!-- m5stack.js use obniz.js.  load obniz.js before m5stack.js -->
   <script src="https://unpkg.com/m5stackjs/m5stack.js"></script>
 ```
 

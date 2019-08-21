@@ -49,6 +49,9 @@ module.exports = {
       mode : "modules",
       tsconfig : "./tsconfig.json",
       name : "M5Stack.js",
+      exclude : ["**/node_modules/!(obniz)/**/*.*", "**/node_modules/obniz/**/node_modules/**/*.*"],
+      ignoreCompilerErrors : true,
+      includeDeclarations : true
     }),
   ],
 };

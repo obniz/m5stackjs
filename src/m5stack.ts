@@ -4,7 +4,7 @@ import {Button} from "obniz/parts/MovementSensor/Button";
 import {M5Display} from "./component/m5display";
 
 import {AK8963} from "./component/ak8963";
-import {MPU6500} from "./component/mpu6500";
+import {MPU6500, xyz} from "./component/mpu6500";
 import {MPU9250} from "./component/mpu9250";
 import {IO} from "obniz/obniz/libs/io_peripherals/io";
 import {Display} from "obniz/obniz/libs/embeds/display";
@@ -29,26 +29,26 @@ export class M5Stack extends Obniz {
 
 
     // auto assign
-    public i012?:IO;
-    public i013?:IO;
-    public i014?:IO;
-    public i015?:IO;
-    public i016?:IO;
-    public i017?:IO;
-    public i018?:IO;
-    public i019?:IO;
-    public i021?:IO;
-    public i022?:IO;
-    public i023?:IO;
-    public i025?:IO;
-    public i026?:IO;
-    public i027?:IO;
-    public i032?:IO;
-    public i033?:IO;
-    public i034?:IO;
-    public i035?:IO;
-    public i036?:IO;
-    public i039?:IO;
+    public io12?:IO;
+    public io13?:IO;
+    public io14?:IO;
+    public io15?:IO;
+    public io16?:IO;
+    public io17?:IO;
+    public io18?:IO;
+    public io19?:IO;
+    public io21?:IO;
+    public io22?:IO;
+    public io23?:IO;
+    public io25?:IO;
+    public io26?:IO;
+    public io27?:IO;
+    public io32?:IO;
+    public io33?:IO;
+    public io34?:IO;
+    public io35?:IO;
+    public io36?:IO;
+    public io39?:IO;
 
 
     constructor(id: string, options?: any) {
@@ -90,14 +90,14 @@ export class M5Stack extends Obniz {
         this.hasIMU = true;
     }
 
-    public gyroWait(): Promise<{x:number,y:number,z:number}>{
+    public gyroWait(): Promise<xyz>{
         if( !this.hasIMU){
             throw new Error("gyroWait is supported only M5stack gray. If this device is, please call setupIMU().")
         }
         return this.mpu9250!.mpu6500!.gyroWait();
     }
 
-    public accelerationWait() : Promise<{x:number,y:number,z:number}>{
+    public accelerationWait() : Promise<xyz>{
         if( !this.hasIMU){
             throw new Error("accelerationWait is supported only M5stack gray. If this device is, please call setupIMU().")
         }

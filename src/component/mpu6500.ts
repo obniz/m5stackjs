@@ -3,6 +3,9 @@ import {I2C} from "obniz/obniz/libs/io_peripherals/i2c";
 
 export type accelScale = "2g" | "4g" | "8g" | "16g";
 export type gyroScale = "250dps" | "500dps" | "1000dps" | "2000dps";
+export type xyz = {x : number, y:number, z:number};
+
+
 
 export class MPU6500 {
     public keys = ['gnd', 'sda', 'scl', 'i2c'];
@@ -107,7 +110,7 @@ export class MPU6500 {
         return await this.i2c!.readWait(this.address, 1)
     }
 
-    public async gyroWait(): Promise<{x:number,y:number,z:number}>{
+    public async gyroWait(): Promise<xyz>{
         this.i2c!.write(this.address, [this.commands.gyro_x_h]);
         let data =  await this.i2c!.readWait(this.address, 6) as number[];
         const {gyro} = this.settingParams;
@@ -121,7 +124,7 @@ export class MPU6500 {
 
     }
 
-    public async accelerationWait() : Promise<{x:number,y:number,z:number}>{
+    public async accelerationWait() : Promise<xyz>{
         this.i2c!.write(this.address, [this.commands.accel_x_h]);
         let data =  await this.i2c!.readWait(this.address, 6) as number[];
 

@@ -39,5 +39,12 @@ class AK8963 {
             return yield this.i2c.readWait(this.address, 1);
         });
     }
+    char2short(values) {
+        const buffer = new ArrayBuffer(2);
+        const dv = new DataView(buffer);
+        dv.setUint8(0, values[0]);
+        dv.setUint8(1, values[1]);
+        return dv.getInt16(0, false);
+    }
 }
 exports.AK8963 = AK8963;

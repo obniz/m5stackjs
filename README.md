@@ -44,7 +44,7 @@ It works on both browser and nodejs.
     m5.m5display.font('Noteworthy',40);
     m5.m5display.print("Noteworthy","#FF0000")
 
-	const servo = obniz.wired("ServoMotor", {signal:17});
+	const servo = obniz.wired("ServoMotor", {signal:2});
 	servo.angle(90);
   };
 </script>
@@ -65,7 +65,7 @@ m5.onconnect = async function () {
       console.log(state);
   }
   
-  const servo = obniz.wired("ServoMotor", {signal:17});
+  const servo = obniz.wired("ServoMotor", {signal:2});
   servo.angle(90);
 
 };

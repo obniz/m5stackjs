@@ -6,6 +6,8 @@ import {M5Display} from "./component/m5display";
 import {AK8963} from "./component/ak8963";
 import {MPU6500} from "./component/mpu6500";
 import {MPU9250} from "./component/mpu9250";
+import {IO} from "obniz/obniz/libs/io_peripherals/io";
+import {Display} from "obniz/obniz/libs/embeds/display";
 
 
 // @ts-ignore
@@ -25,8 +27,33 @@ export class M5Stack extends Obniz {
     private mpu9250?: MPU9250;
     private hasIMU :boolean = false;
 
+
+    // auto assign
+    public i012?:IO;
+    public i013?:IO;
+    public i014?:IO;
+    public i015?:IO;
+    public i016?:IO;
+    public i017?:IO;
+    public i018?:IO;
+    public i019?:IO;
+    public i021?:IO;
+    public i022?:IO;
+    public i023?:IO;
+    public i025?:IO;
+    public i026?:IO;
+    public i027?:IO;
+    public i032?:IO;
+    public i033?:IO;
+    public i034?:IO;
+    public i035?:IO;
+    public i036?:IO;
+    public i039?:IO;
+
+
     constructor(id: string, options?: any) {
         super(id, options);
+
 
     }
 

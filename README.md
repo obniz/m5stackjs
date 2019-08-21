@@ -85,7 +85,7 @@ Add the following script tag to your html
 Install via npm
 
 ```
-  npm install obniz
+  npm install m5stackjs
 ```
 
 and import it to js file.

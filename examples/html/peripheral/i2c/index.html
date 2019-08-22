@@ -11,13 +11,12 @@
 
 <div id="obniz-debug"></div>
 
+
 <script>
   let m5 = new M5Stack('OBNIZ_ID_HERE');
 
   m5.onconnect = async function () {
-
-    const servo = m5.wired("ServoMotor", {signal:2});
-    servo.angle(90);
+    m5.mpu9250.i2c
   };
 </script>
 </body>

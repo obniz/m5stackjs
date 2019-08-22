@@ -87,7 +87,7 @@ class M5Display {
     warnCanvasAvailability() {
         // @ts-ignore
         if (this.obniz.isNode) {
-            throw new Error("obniz.js require node-canvas to draw rich contents. see more detail on docs");
+            throw new Error("obniz.js require node-canvas to draw rich contents. Please run `npm install canvas`");
         }
         else {
             throw new Error("obniz.js cant create canvas element to body");

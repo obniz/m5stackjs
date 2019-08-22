@@ -22,7 +22,10 @@ class M5Stack extends obniz_1.default {
     _prepareComponents() {
         // @ts-ignore
         super._prepareComponents();
+        const i2cParams = { sda: 21, scl: 22, clock: 100000, pull: "3v", mode: "master" };
         this.m5display = new m5display_1.M5Display(this);
+        // @ts-ignore
+        this.m5i2c = this.getI2CWithConfig(i2cParams);
         this.buttonA = this.wired("Button", { signal: 39 });
         this.buttonB = this.wired("Button", { signal: 38 });
         this.buttonC = this.wired("Button", { signal: 37 });
@@ -39,7 +42,7 @@ class M5Stack extends obniz_1.default {
     }
     setupIMU() {
         // @ts-ignore
-        this.mpu9250 = this.wired("MPU9250", { sda: 21, scl: 22 });
+        this.mpu9250 = this.wired("MPU9250", { i2c: this.m5i2c });
         // @ts-ignore
         this._allComponentKeys.push("MPU9250");
         this.hasIMU = true;

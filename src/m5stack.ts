@@ -3,6 +3,7 @@ import Obniz from "obniz";
 import {Button} from "obniz/parts/MovementSensor/Button";
 import {M5Display} from "./component/m5display";
 
+import {I2C} from "obniz/obniz/libs/io_peripherals/i2c";
 import {IO} from "obniz/obniz/libs/io_peripherals/io";
 import {Ak8963} from "./component/ak8963";
 import {Mpu6500, Xyz} from "./component/mpu6500";
@@ -44,6 +45,7 @@ export class M5Stack extends Obniz {
     public io36?: IO;
     public io39?: IO;
 
+    public m5i2c?: I2C;
     private mpu9250?: Mpu9250;
     private hasIMU: boolean = false;
 
@@ -57,7 +59,12 @@ export class M5Stack extends Obniz {
         // @ts-ignore
         super._prepareComponents();
 
+        const i2cParams = {sda: 21, scl: 22, clock : 100000, pull: "3v", mode: "master"};
         this.m5display = new M5Display(this);
+
+        // @ts-ignore
+        this.m5i2c = this.getI2CWithConfig(i2cParams);
+
         this.buttonA = this.wired("Button", {signal: 39});
         this.buttonB = this.wired("Button", {signal: 38});
         this.buttonC = this.wired("Button", {signal: 37});
@@ -79,7 +86,7 @@ export class M5Stack extends Obniz {
 
     public setupIMU() {
         // @ts-ignore
-        this.mpu9250 = this.wired("MPU9250", {sda: 21, scl: 22});
+        this.mpu9250 = this.wired("MPU9250", {i2c: this.m5i2c});
         // @ts-ignore
         this._allComponentKeys.push("MPU9250");
         this.hasIMU = true;

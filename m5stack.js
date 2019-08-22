@@ -238,7 +238,7 @@ class M5Display {
     warnCanvasAvailability() {
         // @ts-ignore
         if (this.obniz.isNode) {
-            throw new Error("obniz.js require node-canvas to draw rich contents. see more detail on docs");
+            throw new Error("obniz.js require node-canvas to draw rich contents. Please run `npm install canvas`");
         }
         else {
             throw new Error("obniz.js cant create canvas element to body");
@@ -251,7 +251,7 @@ class M5Display {
         // @ts-ignore
         if (this.obniz.isNode) {
             try {
-                const { createCanvas } = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'canvas'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+                const { createCanvas } = __webpack_require__("canvas");
                 this._canvas = createCanvas(this.width, this.height);
             }
             catch (e) {
@@ -705,7 +705,10 @@ class M5Stack extends obniz_1.default {
     _prepareComponents() {
         // @ts-ignore
         super._prepareComponents();
+        const i2cParams = { sda: 21, scl: 22, clock: 100000, pull: "3v", mode: "master" };
         this.m5display = new m5display_1.M5Display(this);
+        // @ts-ignore
+        this.m5i2c = this.getI2CWithConfig(i2cParams);
         this.buttonA = this.wired("Button", { signal: 39 });
         this.buttonB = this.wired("Button", { signal: 38 });
         this.buttonC = this.wired("Button", { signal: 37 });
@@ -722,7 +725,7 @@ class M5Stack extends obniz_1.default {
     }
     setupIMU() {
         // @ts-ignore
-        this.mpu9250 = this.wired("MPU9250", { sda: 21, scl: 22 });
+        this.mpu9250 = this.wired("MPU9250", { i2c: this.m5i2c });
         // @ts-ignore
         this._allComponentKeys.push("MPU9250");
         this.hasIMU = true;
@@ -758,6 +761,13 @@ if (typeof Obniz !== "undefined") {
 
 module.exports=obniz;
 
+
+/***/ }),
+
+/***/ "canvas":
+/***/ (function(module, exports) {
+
+module.exports = require("canvas");
 
 /***/ })
 

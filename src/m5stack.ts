@@ -59,7 +59,7 @@ export class M5Stack extends Obniz {
         // @ts-ignore
         super._prepareComponents();
 
-        const i2cParams = {sda: 21, scl: 22, clock : 100000, pull: "3v", mode: "master"};
+        const i2cParams = {sda: 21, scl: 22, clock: 100000, pull: "3v", mode: "master"};
         this.m5display = new M5Display(this);
 
         // @ts-ignore
@@ -80,6 +80,14 @@ export class M5Stack extends Obniz {
             // @ts-ignore
             this._allComponentKeys.push(key);
 
+            // @ts-ignore
+            if (this[key] && !this[key]._reset) {
+
+                // @ts-ignore
+                this[key]._reset = () => {
+                    return;
+                };
+            }
         }
 
     }
@@ -93,14 +101,14 @@ export class M5Stack extends Obniz {
     }
 
     public gyroWait(): Promise<Xyz> {
-        if ( !this.hasIMU) {
+        if (!this.hasIMU) {
             throw new Error("gyroWait is supported only M5stack gray. If this device is, please call setupIMU().");
         }
         return this.mpu9250!.mpu6500!.gyroWait();
     }
 
     public accelerationWait(): Promise<Xyz> {
-        if ( !this.hasIMU) {
+        if (!this.hasIMU) {
             throw new Error(
                 "accelerationWait is supported only M5stack gray. If this device is, please call setupIMU().",
             );

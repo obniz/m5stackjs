@@ -199,6 +199,10 @@ class M5Display {
             name: "M5Display",
         };
     }
+    // @ts-ignore
+    _reset() {
+        return;
+    }
     getIO(pin) {
         // @ts-ignore
         return this.obniz.getIO(pin);
@@ -721,6 +725,13 @@ class M5Stack extends obniz_1.default {
         for (const key of keys) {
             // @ts-ignore
             this._allComponentKeys.push(key);
+            // @ts-ignore
+            if (this[key] && !this[key]._reset) {
+                // @ts-ignore
+                this[key]._reset = () => {
+                    return;
+                };
+            }
         }
     }
     setupIMU() {

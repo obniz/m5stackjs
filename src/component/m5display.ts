@@ -48,7 +48,7 @@ export class M5Display {
     private spi: SPI;
 
     private _canvas?: HTMLCanvasElement;
-    private _pos: {x: number, y: number} = { x: 0, y: 0 };
+    private _pos: { x: number, y: number } = {x: 0, y: 0};
 
     constructor(obniz: Obniz) {
 
@@ -58,6 +58,11 @@ export class M5Display {
         this.spi = this.obniz.getFreeSpi();
         this.setup();
 
+    }
+
+    // @ts-ignore
+    public _reset() {
+        return;
     }
 
     public getIO(pin: number): IO {
@@ -114,14 +119,14 @@ export class M5Display {
         }
     }
 
-    public _preparedCanvas(): HTMLCanvasElement|null {
+    public _preparedCanvas(): HTMLCanvasElement | null {
         if (this._canvas) {
             return this._canvas;
         }
         // @ts-ignore
         if (this.obniz.isNode) {
             try {
-                const { createCanvas } = require("canvas");
+                const {createCanvas} = require("canvas");
                 this._canvas = createCanvas(this.width, this.height);
             } catch (e) {
                 this.warnCanvasAvailability();
@@ -133,7 +138,7 @@ export class M5Display {
             const identifier = "obnizcanvas-" + this.obniz.id;
             let canvas: HTMLCanvasElement = document.getElementById(identifier) as HTMLCanvasElement;
             if (!canvas) {
-                canvas = document.createElement("canvas")  ;
+                canvas = document.createElement("canvas");
                 canvas.setAttribute("id", identifier);
                 canvas.style.visibility = "hidden";
                 canvas.width = this.width;
@@ -264,6 +269,7 @@ export class M5Display {
         await this.lcd_init();
         this.ready = true;
     }
+
     public off() {
         this.getIO(32).output(false);
         this.ready = false;
@@ -361,7 +367,9 @@ export class M5Display {
      * @param data [0xRRRG GGBBB]の１次配列
      */
     private printScreenRawRect(x: number, y: number, width: number, height: number, data: number[]) {
-        if (!this.ready) {return; }
+        if (!this.ready) {
+            return;
+        }
         this.set_update_rect(0, 0, this.m5defines.WIDTH, this.m5defines.HEIGHT);
         this.getIO(this.m5defines.TFT_RS).output(true);
         this.write_data_array(data);

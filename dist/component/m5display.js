@@ -48,6 +48,10 @@ class M5Display {
             name: "M5Display",
         };
     }
+    // @ts-ignore
+    _reset() {
+        return;
+    }
     getIO(pin) {
         // @ts-ignore
         return this.obniz.getIO(pin);
